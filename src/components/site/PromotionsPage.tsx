@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { Tag, Sparkles, ArrowRight, CalendarClock, Percent } from 'lucide-react';
 
+import { PageHero, HERO_IMAGES } from './PageHero';
 import { useApp } from '../../context/AppContext';
 import { AgencyFilter } from './AgencyFilter';
 import { CarDetailsModal } from './CarDetailsModal';
@@ -43,36 +44,25 @@ export const PromotionsPage: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen pt-28 pb-24 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen pb-24"
       style={{ background: 'var(--color-ink)' }}
     >
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-10"
-        >
-          <p
-            className="text-[11px] font-bold uppercase tracking-[0.22em] mb-3 inline-flex items-center gap-2"
-            style={{ color: 'var(--color-magenta)', fontFamily: 'var(--font-display)' }}
-          >
-            <Sparkles size={13} /> {lang === 'fr' ? 'Bons plans' : 'عروض'}
-          </p>
-          <h1
-            className="font-black text-4xl sm:text-6xl leading-tight"
-            style={{ color: 'var(--color-title)', fontFamily: 'var(--font-display)' }}
-          >
-            {lang === 'fr' ? 'Offres ' : ''}
-            <span className="text-aurora">{lang === 'fr' ? 'spéciales' : 'عروض خاصة'}</span>
-          </h1>
-          <p className="text-sm sm:text-base mt-4 max-w-2xl mx-auto" style={{ color: 'var(--color-muted)' }}>
-            {lang === 'fr'
-              ? 'Les promotions en cours dans toutes nos agences partenaires, réunies sur une seule page.'
-              : 'العروض الجارية في كل وكالاتنا الشريكة في صفحة واحدة.'}
-          </p>
-        </motion.div>
+      <PageHero
+        image={HERO_IMAGES.promotions}
+        eyebrow={<><Sparkles size={13} /> {lang === 'fr' ? 'Bons plans' : 'عروض'}</>}
+        title={
+          lang === 'fr'
+            ? <>Offres <span className="text-aurora">spéciales</span></>
+            : <span className="text-aurora">عروض خاصة</span>
+        }
+        description={
+          lang === 'fr'
+            ? 'Les promotions en cours dans toutes nos agences partenaires, réunies sur une seule page.'
+            : 'العروض الجارية في كل وكالاتنا الشريكة.'
+        }
+      />
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
@@ -185,7 +175,7 @@ const OfferCard: React.FC<{
         />
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ background: 'linear-gradient(to top, rgba(5,6,15,0.85), rgba(5,6,15,0.1) 55%, transparent)' }}
+          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.1) 55%, transparent)' }}
         />
 
         <div className="absolute top-3 left-3">
@@ -201,7 +191,7 @@ const OfferCard: React.FC<{
           className="absolute top-3 right-3 w-16 h-16 rounded-full flex flex-col items-center justify-center text-white"
           style={{
             background: 'linear-gradient(135deg, var(--color-magenta), var(--color-magenta-dark))',
-            boxShadow: '0 8px 26px rgba(244,113,181,0.45)',
+            boxShadow: '0 8px 26px rgba(212,0,42,0.45)',
             fontFamily: 'var(--font-display)',
           }}
         >
@@ -220,7 +210,7 @@ const OfferCard: React.FC<{
           )}
           <h3
             className="font-black text-lg leading-tight truncate"
-            style={{ color: '#F5F6FF', fontFamily: 'var(--font-display)', textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}
+            style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}
           >
             {car.brand} <span style={{ color: 'var(--color-aqua-light)' }}>{car.model}</span>
           </h3>

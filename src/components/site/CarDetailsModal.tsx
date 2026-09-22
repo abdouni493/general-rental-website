@@ -60,7 +60,7 @@ export const CarDetailsModal: React.FC<{
         exit={{ opacity: 0 }}
         onClick={onClose}
         className="absolute inset-0"
-        style={{ background: 'rgba(5, 6, 15, 0.76)', backdropFilter: 'blur(10px)' }}
+        style={{ background: 'rgba(0, 0, 0, 0.76)', backdropFilter: 'blur(10px)' }}
       />
 
       <motion.div
@@ -78,7 +78,7 @@ export const CarDetailsModal: React.FC<{
           onClick={onClose}
           aria-label={lang === 'fr' ? 'Fermer' : 'إغلاق'}
           className="absolute top-4 right-4 z-20 w-9 h-9 rounded-xl flex items-center justify-center backdrop-blur-md"
-          style={{ background: 'rgba(5,6,15,0.6)', border: '1px solid var(--color-line)', color: '#fff' }}
+          style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid var(--color-line)', color: '#fff' }}
         >
           <X size={17} />
         </button>
@@ -93,7 +93,7 @@ export const CarDetailsModal: React.FC<{
           />
           <div
             className="absolute inset-0"
-            style={{ background: 'linear-gradient(to top, var(--color-panel) 2%, rgba(5,6,15,0.35) 48%, transparent 100%)' }}
+            style={{ background: 'linear-gradient(to top, var(--color-panel) 2%, rgba(0,0,0,0.35) 48%, transparent 100%)' }}
           />
 
           <div className="absolute bottom-5 left-5 right-5 flex flex-wrap items-end justify-between gap-3">
@@ -106,7 +106,7 @@ export const CarDetailsModal: React.FC<{
               </span>
               <h2
                 className="font-black text-2xl sm:text-3xl leading-tight"
-                style={{ color: '#F5F6FF', fontFamily: 'var(--font-display)', textShadow: '0 2px 16px rgba(0,0,0,0.6)' }}
+                style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', textShadow: '0 2px 16px rgba(0,0,0,0.6)' }}
               >
                 {car.brand} <span style={{ color: 'var(--color-aqua-light)' }}>{car.model}</span>
               </h2>
@@ -220,7 +220,7 @@ export const CarDetailsModal: React.FC<{
           {offer?.note && (
             <div
               className="rounded-xl p-4 text-sm"
-              style={{ background: 'var(--color-magenta-soft)', border: '1px solid rgba(244,113,181,0.28)', color: 'var(--color-body)' }}
+              style={{ background: 'var(--color-magenta-soft)', border: '1px solid rgba(212,0,42,0.28)', color: 'var(--color-body)' }}
             >
               {offer.note}
             </div>

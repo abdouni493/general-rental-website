@@ -230,7 +230,7 @@ export const AdminAgencies: React.FC = () => {
                   {status && (!status.reachable || status.error) && (
                     <div
                       className="mt-4 rounded-xl px-4 py-3 flex items-start gap-2.5"
-                      style={{ background: 'rgba(251,191,36,0.08)', border: '1px solid rgba(251,191,36,0.26)' }}
+                      style={{ background: 'rgba(176,123,18,0.08)', border: '1px solid rgba(176,123,18,0.26)' }}
                     >
                       <AlertTriangle size={15} style={{ color: 'var(--color-amber)' }} className="shrink-0 mt-0.5" />
                       <div className="min-w-0">
@@ -281,8 +281,8 @@ export const AdminAgencies: React.FC = () => {
                       className="h-10 px-4 rounded-xl text-xs font-bold inline-flex items-center gap-2 transition-colors ml-auto"
                       style={{
                         color: 'var(--color-coral)',
-                        background: 'rgba(251,113,133,0.08)',
-                        border: '1px solid rgba(251,113,133,0.2)',
+                        background: 'rgba(194,14,26,0.08)',
+                        border: '1px solid rgba(194,14,26,0.2)',
                         fontFamily: 'var(--font-display)',
                       }}
                     >
@@ -346,7 +346,7 @@ export const AdminAgencies: React.FC = () => {
               </p>
               <div
                 className="rounded-xl px-4 py-3 flex items-start gap-2.5"
-                style={{ background: 'rgba(52,211,153,0.08)', border: '1px solid rgba(52,211,153,0.24)' }}
+                style={{ background: 'rgba(70,130,84,0.08)', border: '1px solid rgba(70,130,84,0.24)' }}
               >
                 <Check size={15} style={{ color: 'var(--color-mint)' }} className="shrink-0 mt-0.5" />
                 <p className="text-xs">
@@ -380,12 +380,12 @@ const StatusPill: React.FC<{
     return <Pill color="var(--color-muted)" bg="var(--color-panel-2)" label="Non vérifiée" />;
   }
   if (!health.reachable) {
-    return <Pill color="var(--color-coral)" bg="rgba(251,113,133,0.1)" label="Injoignable" />;
+    return <Pill color="var(--color-coral)" bg="rgba(194,14,26,0.1)" label="Injoignable" />;
   }
   if (health.error) {
-    return <Pill color="var(--color-amber)" bg="rgba(251,191,36,0.1)" label="Partielle" />;
+    return <Pill color="var(--color-amber)" bg="rgba(176,123,18,0.1)" label="Partielle" />;
   }
-  return <Pill color="var(--color-mint)" bg="rgba(52,211,153,0.1)" label="En ligne" live />;
+  return <Pill color="var(--color-mint)" bg="rgba(70,130,84,0.1)" label="En ligne" live />;
 };
 
 const Pill: React.FC<{

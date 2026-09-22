@@ -42,42 +42,35 @@ export const SiteLayout: React.FC<{ children: React.ReactNode }> = ({ children }
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--color-ink)' }}>
       {/* ══ BARRE DE NAVIGATION ══ */}
+      {/* Chez Avis la barre est une bande pleine et opaque dès le premier pixel :
+          seule son ombre apparaît au défilement. */}
       <header
-        className="sticky top-0 z-50 transition-all duration-300"
+        className="sticky top-0 z-50 transition-shadow duration-250"
         style={{
-          background: scrolled
-            ? 'color-mix(in srgb, var(--color-ink) 82%, transparent)'
-            : 'transparent',
-          backdropFilter: scrolled ? 'blur(20px) saturate(150%)' : 'none',
-          WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(150%)' : 'none',
-          borderBottom: scrolled ? '1px solid var(--color-line)' : '1px solid transparent',
+          background: 'var(--color-panel)',
+          borderBottom: '1px solid var(--color-line)',
+          boxShadow: scrolled ? 'var(--shadow-panel)' : 'none',
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20 gap-4">
+          <div className="flex items-center justify-between h-[72px] gap-4">
 
             {/* ── Marque ── */}
             <Link to="/" className="flex items-center gap-3 group shrink-0">
               <motion.div
-                whileHover={{ rotate: -8, scale: 1.06 }}
-                transition={{ type: 'spring', stiffness: 380, damping: 18 }}
-                className="w-11 h-11 rounded-2xl flex items-center justify-center relative overflow-hidden"
-                style={{
-                  background: 'linear-gradient(135deg, var(--color-iris-dark), var(--color-iris) 50%, var(--color-aqua))',
-                  boxShadow: '0 8px 24px var(--color-iris-glow)',
-                }}
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+                className="w-10 h-10 flex items-center justify-center relative overflow-hidden"
+                style={{ background: 'var(--color-iris)' }}
               >
-                <Car size={21} className="text-white relative z-10" />
+                <Car size={20} className="text-white relative z-10" />
               </motion.div>
               <div className="hidden sm:block leading-tight">
-                <p
-                  className="font-black text-xl tracking-tight"
-                  style={{ color: 'var(--color-title)', fontFamily: 'var(--font-display)' }}
-                >
+                <p className="avis-headline text-2xl" style={{ color: 'var(--color-title)' }}>
                   Drive<span className="text-aurora">Hub</span>
                 </p>
                 <p
-                  className="text-[10px] font-bold tracking-[0.18em] uppercase"
+                  className="text-[9px] font-bold tracking-[0.14em] uppercase"
                   style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-display)' }}
                 >
                   {lang === 'fr'
@@ -93,19 +86,19 @@ export const SiteLayout: React.FC<{ children: React.ReactNode }> = ({ children }
                 <NavLink key={item.to} to={item.to} end={item.to === '/'}>
                   {({ isActive }) => (
                     <span
-                      className="relative px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-[0.1em] transition-colors duration-200 inline-block"
+                      className="relative px-4 py-6 text-[13px] font-semibold transition-colors duration-250 inline-block"
                       style={{
-                        color: isActive ? 'var(--color-iris)' : 'var(--color-muted)',
-                        fontFamily: 'var(--font-display)',
+                        color: isActive ? 'var(--color-iris)' : 'var(--color-title)',
+                        fontFamily: 'var(--font-sans)',
                       }}
                     >
                       {item.label[lang]}
                       {isActive && (
                         <motion.span
-                          layoutId="nav-pill"
-                          className="absolute inset-0 rounded-xl -z-10"
-                          style={{ background: 'var(--color-iris-soft)', border: '1px solid var(--color-line)' }}
-                          transition={{ type: 'spring', stiffness: 400, damping: 34 }}
+                          layoutId="nav-underline"
+                          className="absolute left-2 right-2 bottom-0 h-[3px]"
+                          style={{ background: 'var(--color-iris)' }}
+                          transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
                         />
                       )}
                     </span>
@@ -136,11 +129,12 @@ export const SiteLayout: React.FC<{ children: React.ReactNode }> = ({ children }
 
               <button
                 onClick={() => setLang(lang === 'fr' ? 'ar' : 'fr')}
-                className="px-3 h-9 rounded-xl text-xs font-black transition-all duration-200 hidden sm:block"
+                className="px-3 h-9 text-xs font-extrabold uppercase transition-colors duration-250 hidden sm:block"
                 style={{
-                  color: 'var(--color-iris)',
-                  background: 'var(--color-iris-soft)',
+                  color: 'var(--color-title)',
+                  background: 'transparent',
                   border: '1px solid var(--color-line)',
+                  borderRadius: '2px',
                   fontFamily: 'var(--font-display)',
                 }}
                 aria-label={lang === 'fr' ? 'Passer en arabe' : 'التبديل إلى الفرنسية'}
@@ -151,11 +145,12 @@ export const SiteLayout: React.FC<{ children: React.ReactNode }> = ({ children }
               {/* Accès à l'espace d'administration — demandé sur la navbar. */}
               <Link
                 to="/admin/login"
-                className="hidden md:inline-flex items-center gap-2 h-9 px-4 rounded-xl text-xs font-bold transition-all duration-200"
+                className="hidden md:inline-flex items-center gap-2 h-9 px-4 text-xs font-bold transition-colors duration-250"
                 style={{
                   color: 'var(--color-title)',
-                  background: 'var(--color-panel-2)',
+                  background: 'transparent',
                   border: '1px solid var(--color-line)',
+                  borderRadius: '2px',
                   fontFamily: 'var(--font-display)',
                 }}
                 onMouseEnter={e => {
@@ -171,14 +166,14 @@ export const SiteLayout: React.FC<{ children: React.ReactNode }> = ({ children }
                 {lang === 'fr' ? 'Admin' : 'الإدارة'}
               </Link>
 
-              <Link to="/reserver" className="btn-aurora hidden sm:inline-flex h-9 px-5 text-xs">
+              <Link to="/reserver" className="btn-aurora hidden sm:inline-flex h-9 px-6 text-xs uppercase tracking-[0.04em]">
                 {lang === 'fr' ? 'Réserver' : 'احجز'}
               </Link>
 
               <button
                 onClick={() => setMenuOpen(v => !v)}
-                className="lg:hidden w-9 h-9 rounded-xl flex items-center justify-center"
-                style={{ background: 'var(--color-panel-2)', border: '1px solid var(--color-line)', color: 'var(--color-title)' }}
+                className="lg:hidden w-9 h-9 flex items-center justify-center"
+                style={{ background: 'transparent', border: '1px solid var(--color-line)', color: 'var(--color-title)' }}
                 aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
                 aria-expanded={menuOpen}
               >
@@ -193,7 +188,7 @@ export const SiteLayout: React.FC<{ children: React.ReactNode }> = ({ children }
           className="h-[2px] origin-left"
           style={{
             scaleX: progress,
-            background: 'linear-gradient(90deg, var(--color-iris), var(--color-aqua), var(--color-magenta))',
+            background: 'var(--color-iris)',
           }}
         />
 
@@ -204,7 +199,7 @@ export const SiteLayout: React.FC<{ children: React.ReactNode }> = ({ children }
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
               className="lg:hidden overflow-hidden"
               style={{ background: 'var(--color-ink-alt)', borderTop: '1px solid var(--color-line)' }}
             >
@@ -219,10 +214,11 @@ export const SiteLayout: React.FC<{ children: React.ReactNode }> = ({ children }
                     <NavLink to={item.to} end={item.to === '/'}>
                       {({ isActive }) => (
                         <span
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold"
+                          className="flex items-center gap-3 px-4 py-3 text-sm font-bold"
                           style={{
-                            color: isActive ? 'var(--color-iris)' : 'var(--color-body)',
+                            color: isActive ? 'var(--color-iris)' : 'var(--color-title)',
                             background: isActive ? 'var(--color-iris-soft)' : 'transparent',
+                            borderLeft: isActive ? '4px solid var(--color-iris)' : '4px solid transparent',
                             fontFamily: 'var(--font-display)',
                           }}
                         >
@@ -261,10 +257,10 @@ const IconButton: React.FC<{ onClick: () => void; label: string; children: React
     onClick={onClick}
     aria-label={label}
     title={label}
-    className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200"
-    style={{ background: 'var(--color-panel-2)', border: '1px solid var(--color-line)', color: 'var(--color-body)' }}
+    className="w-9 h-9 flex items-center justify-center transition-colors duration-250"
+    style={{ background: 'transparent', border: '1px solid var(--color-line)', color: 'var(--color-title)' }}
     onMouseEnter={e => { e.currentTarget.style.color = 'var(--color-iris)'; }}
-    onMouseLeave={e => { e.currentTarget.style.color = 'var(--color-body)'; }}
+    onMouseLeave={e => { e.currentTarget.style.color = 'var(--color-title)'; }}
   >
     {children}
   </button>
@@ -277,23 +273,20 @@ const SiteFooter: React.FC = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer style={{ background: 'var(--color-ink-alt)', borderTop: '1px solid var(--color-line)' }}>
+    <footer style={{ background: '#0D0D0B', color: 'rgba(255,255,255,0.72)', borderTop: '4px solid #D4002A' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
 
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, var(--color-iris), var(--color-aqua))' }}
-              >
+              <div className="w-10 h-10 flex items-center justify-center" style={{ background: '#D4002A' }}>
                 <Car size={18} className="text-white" />
               </div>
-              <p className="font-black text-xl" style={{ color: 'var(--color-title)', fontFamily: 'var(--font-display)' }}>
-                Drive<span className="text-aurora">Hub</span>
+              <p className="avis-headline text-2xl text-white">
+                Drive<span style={{ color: '#FF4D6D' }}>Hub</span>
               </p>
             </div>
-            <p className="text-sm leading-relaxed max-w-md" style={{ color: 'var(--color-muted)' }}>
+            <p className="text-sm leading-relaxed max-w-md" style={{ color: 'rgba(255,255,255,0.7)' }}>
               {lang === 'fr'
                 ? "Le portail qui réunit la flotte de plusieurs agences de location. Comparez, choisissez, réservez : votre demande part directement à l'agence propriétaire du véhicule."
                 : 'البوابة التي تجمع أسطول عدة وكالات تأجير. قارن واختر واحجز: يصل طلبك مباشرة إلى الوكالة المالكة للسيارة.'}
@@ -302,11 +295,11 @@ const SiteFooter: React.FC = () => {
               {agencies.map(a => (
                 <span
                   key={a.id}
-                  className="px-3 py-1.5 rounded-lg text-[11px] font-bold"
+                  className="px-3 py-1.5 text-[11px] font-bold"
                   style={{
-                    color: 'var(--color-body)',
-                    background: 'var(--color-panel)',
-                    border: '1px solid var(--color-line)',
+                    color: '#FFFFFF',
+                    background: 'rgba(255,255,255,0.08)',
+                    border: '1px solid rgba(255,255,255,0.18)',
                     fontFamily: 'var(--font-display)',
                   }}
                 >
@@ -318,8 +311,13 @@ const SiteFooter: React.FC = () => {
 
           <div>
             <h4
-              className="font-bold text-[11px] tracking-[0.18em] uppercase mb-4"
-              style={{ color: 'var(--color-iris)', fontFamily: 'var(--font-display)' }}
+              className="font-extrabold text-[11px] tracking-[0.16em] uppercase mb-4 pb-2"
+              style={{
+                color: '#FFFFFF',
+                fontFamily: 'var(--font-display)',
+                borderBottom: '2px solid #D4002A',
+                display: 'inline-block',
+              }}
             >
               {lang === 'fr' ? 'Navigation' : 'التنقل'}
             </h4>
@@ -328,10 +326,10 @@ const SiteFooter: React.FC = () => {
                 <li key={item.to}>
                   <Link
                     to={item.to}
-                    className="text-sm inline-flex items-center gap-1.5 transition-colors"
-                    style={{ color: 'var(--color-muted)' }}
-                    onMouseEnter={e => { e.currentTarget.style.color = 'var(--color-iris)'; }}
-                    onMouseLeave={e => { e.currentTarget.style.color = 'var(--color-muted)'; }}
+                    className="text-sm inline-flex items-center gap-1.5 transition-colors duration-250"
+                    style={{ color: 'rgba(255,255,255,0.7)' }}
+                    onMouseEnter={e => { e.currentTarget.style.color = '#FF4D6D'; }}
+                    onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.7)'; }}
                   >
                     {item.label[lang]}
                   </Link>
@@ -342,8 +340,13 @@ const SiteFooter: React.FC = () => {
 
           <div>
             <h4
-              className="font-bold text-[11px] tracking-[0.18em] uppercase mb-4"
-              style={{ color: 'var(--color-iris)', fontFamily: 'var(--font-display)' }}
+              className="font-extrabold text-[11px] tracking-[0.16em] uppercase mb-4 pb-2"
+              style={{
+                color: '#FFFFFF',
+                fontFamily: 'var(--font-display)',
+                borderBottom: '2px solid #D4002A',
+                display: 'inline-block',
+              }}
             >
               {lang === 'fr' ? 'Accès rapide' : 'وصول سريع'}
             </h4>
@@ -351,8 +354,8 @@ const SiteFooter: React.FC = () => {
               <li>
                 <Link
                   to="/reserver"
-                  className="text-sm inline-flex items-center gap-1.5"
-                  style={{ color: 'var(--color-muted)' }}
+                  className="avis-arrow text-sm inline-flex items-center gap-1.5 font-normal"
+                  style={{ color: 'rgba(255,255,255,0.7)' }}
                 >
                   {lang === 'fr' ? 'Réserver un véhicule' : 'احجز سيارة'} <ArrowUpRight size={13} />
                 </Link>
@@ -360,8 +363,8 @@ const SiteFooter: React.FC = () => {
               <li>
                 <Link
                   to="/admin/login"
-                  className="text-sm inline-flex items-center gap-1.5"
-                  style={{ color: 'var(--color-muted)' }}
+                  className="avis-arrow text-sm inline-flex items-center gap-1.5 font-normal"
+                  style={{ color: 'rgba(255,255,255,0.7)' }}
                 >
                   {lang === 'fr' ? 'Espace administration' : 'مساحة الإدارة'} <ArrowUpRight size={13} />
                 </Link>
@@ -372,14 +375,14 @@ const SiteFooter: React.FC = () => {
 
         <div
           className="mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3"
-          style={{ borderTop: '1px solid var(--color-line-soft)' }}
+          style={{ borderTop: '1px solid rgba(255,255,255,0.14)' }}
         >
-          <p className="text-xs" style={{ color: 'var(--color-faint)' }}>
+          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.55)' }}>
             © {year} DriveHub. {lang === 'fr' ? 'Tous droits réservés.' : 'جميع الحقوق محفوظة.'}
           </p>
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full dot-live" style={{ background: 'var(--color-mint)', color: 'var(--color-mint)' }} />
-            <span className="text-[11px] font-bold tracking-wider" style={{ color: 'var(--color-faint)', fontFamily: 'var(--font-display)' }}>
+            <span className="w-1.5 h-1.5 rounded-full dot-live" style={{ background: '#5CB874', color: '#5CB874' }} />
+            <span className="text-[11px] font-bold tracking-wider uppercase" style={{ color: 'rgba(255,255,255,0.55)', fontFamily: 'var(--font-display)' }}>
               {agencies.length} {lang === 'fr' ? 'agences connectées' : 'وكالات متصلة'}
             </span>
           </div>

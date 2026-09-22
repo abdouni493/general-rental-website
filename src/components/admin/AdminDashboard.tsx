@@ -139,7 +139,7 @@ export const AdminDashboard: React.FC = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className="rounded-2xl p-4 mb-7 flex items-start gap-3"
-          style={{ background: 'rgba(251,191,36,0.08)', border: '1px solid rgba(251,191,36,0.28)' }}
+          style={{ background: 'rgba(176,123,18,0.08)', border: '1px solid rgba(176,123,18,0.28)' }}
         >
           <AlertTriangle size={18} style={{ color: 'var(--color-amber)' }} className="shrink-0 mt-0.5" />
           <div className="min-w-0 flex-1">

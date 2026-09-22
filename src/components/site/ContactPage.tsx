@@ -6,9 +6,9 @@ import {
   Clock, HelpCircle, ShieldCheck,
 } from 'lucide-react';
 
+import { PageHero, HERO_IMAGES } from './PageHero';
 import { useApp } from '../../context/AppContext';
 import { FleetService } from '../../services/FleetService';
-import { SectionHeading } from './HomePage';
 import { agencyColor, agencyTint } from '../../utils/format';
 import type { AgencyContact } from '../../types';
 
@@ -70,20 +70,25 @@ export const ContactPage: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen pt-28 pb-24 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen pb-24"
       style={{ background: 'var(--color-ink)' }}
     >
-      <div className="max-w-6xl mx-auto">
-        <SectionHeading
-          eyebrow={lang === 'fr' ? 'Nous joindre' : 'تواصل معنا'}
-          title={lang === 'fr' ? 'Parlez à la bonne agence' : 'تحدث إلى الوكالة المناسبة'}
-          description={
-            lang === 'fr'
-              ? "DriveHub réunit plusieurs loueurs indépendants. Pour une réservation en cours, adressez-vous directement à l'agence qui détient le véhicule."
-              : 'يجمع DriveHub عدة مؤجرين مستقلين. لحجز جار، اتصل مباشرة بالوكالة المالكة للسيارة.'
-          }
-        />
+      <PageHero
+        image={HERO_IMAGES.contact}
+        eyebrow={lang === 'fr' ? 'Nous joindre' : 'تواصل معنا'}
+        title={
+          lang === 'fr'
+            ? <>Parlez à la <span className="text-aurora">bonne agence</span></>
+            : <span className="text-aurora">تحدث إلى الوكالة المناسبة</span>
+        }
+        description={
+          lang === 'fr'
+            ? "DriveHub réunit plusieurs loueurs indépendants. Pour une réservation en cours, adressez-vous directement à l'agence qui détient le véhicule."
+            : 'يجمع DriveHub عدة مؤجرين مستقلين.'
+        }
+      />
 
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
         {/* ── Coordonnées par agence ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mb-16">
           {loading

@@ -1,112 +1,130 @@
 @import "tailwindcss";
 
 /* ============================================================================
-   DRIVEHUB — SYSTÈME DE THÈME « AURORA »
+   DRIVEHUB — SYSTÈME DE THÈME « AVIS »
    ============================================================================
-   Identité volontairement DIFFÉRENTE des trois agences intégrées :
-     • SZ Cars  → noir obsidienne + or
-     • iCar     → crème + or métallique
-     • MHD Auto → ardoise claire + rouge crimson + bleu électrique
-     • DriveHub → nuit indigo + VIOLET / AQUA / MAGENTA (aurore boréale)
+   Repris de l'analyse du design system d'avis.com (septembre 2026) :
+
+     • Rouge de marque      #D4002A   — CTA, accents, liserés
+     • Rouge foncé          #91001D   — survol des CTA, badges promo
+     • Bordeaux profond     #85000F → #410105  (dégradé des bandeaux pleins)
+     • Page blanche         #FFFFFF, bandes grises #F4F4F4 / #F8F8F8
+     • Texte noir pur       #000000, texte atténué #736D6D
+     • Bleu ardoise         #27455C   — accent secondaire, données
+     • Vert                 #468254   — disponibilité / succès
+     • Rayons quasi nuls    2 → 4 px  (l'interface d'Avis est plate, anguleuse)
+     • Titres en CAPITALES, interlignage 1.0, approche −0.02em
+     • Transition standard  0.25s cubic-bezier(0.4, 0, 0.2, 1)
 
    Fonctionnement
    --------------
    Tailwind v4 compile `bg-ink` en `background-color: var(--color-ink)`.
    Les utilitaires pointent donc sur la variable, jamais sur une valeur figée :
-   redéfinir la variable sous `[data-theme="light"]` bascule TOUTE l'interface.
+   redéfinir la variable sous `[data-theme="dark"]` bascule TOUTE l'interface.
 
    `data-theme` est posé sur <html> par le script inline de index.html puis
-   maintenu par src/context/ThemeContext.tsx. Le sombre est le défaut du site
-   public, le clair celui de l'espace d'administration.
+   maintenu par src/context/AppContext.tsx (site) et AdminLayout.tsx (admin).
+   Le CLAIR est le défaut partout — c'est l'identité d'Avis. Le sombre reprend
+   les bandeaux noirs qu'Avis utilise pour ses visuels pleine largeur.
    ============================================================================ */
 
 @theme {
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Sora", "Manrope", sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Archivo", "Inter", sans-serif;
 
-  /* ── Aurore : les trois teintes de marque ───────────────────────────────── */
-  --color-iris:        #7C5CFF;  /* violet principal — CTA, liens actifs      */
-  --color-iris-light:  #A18CFF;
-  --color-iris-dark:   #5B3BE0;
-  --color-iris-deep:   #3D22B0;
+  /* ── Rouge Avis : la teinte de marque ───────────────────────────────────── */
+  --color-iris:        #D4002A;  /* rouge Avis — CTA, liens actifs            */
+  --color-iris-light:  #E63950;
+  --color-iris-dark:   #91001D;
+  --color-iris-deep:   #410105;
 
-  --color-aqua:        #22D3EE;  /* cyan — accent secondaire, données         */
-  --color-aqua-light:  #67E8F9;
-  --color-aqua-dark:   #0E9BB8;
+  --color-aqua:        #27455C;  /* bleu ardoise — accent secondaire, données */
+  --color-aqua-light:  #3E6580;
+  --color-aqua-dark:   #1B2F3E;
 
-  --color-magenta:     #F471B5;  /* magenta — promotions, badges              */
-  --color-magenta-dark:#DB2777;
+  --color-magenta:     #91001D;  /* promotions, badges de remise             */
+  --color-magenta-dark:#410105;
 
-  --color-mint:        #34D399;  /* succès / disponibilité                    */
-  --color-amber:       #FBBF24;  /* attention                                 */
-  --color-coral:       #FB7185;  /* erreur / suppression                      */
+  --color-mint:        #468254;  /* succès / disponibilité                    */
+  --color-amber:       #B07B12;  /* attention                                 */
+  --color-coral:       #C20E1A;  /* erreur / suppression                      */
 
-  /* Lueurs réutilisées dans les ombres et les halos */
-  --color-iris-glow:   rgba(124, 92, 255, 0.35);
-  --color-iris-soft:   rgba(124, 92, 255, 0.10);
-  --color-aqua-glow:   rgba(34, 211, 238, 0.28);
-  --color-aqua-soft:   rgba(34, 211, 238, 0.09);
-  --color-magenta-soft:rgba(244, 113, 181, 0.10);
+  /* Voiles réutilisés dans les ombres et les fonds teintés */
+  --color-iris-glow:   rgba(212, 0, 42, 0.28);
+  --color-iris-soft:   rgba(212, 0, 42, 0.07);
+  --color-aqua-glow:   rgba(39, 69, 92, 0.22);
+  --color-aqua-soft:   rgba(39, 69, 92, 0.07);
+  --color-magenta-soft:rgba(145, 0, 29, 0.08);
 
-  /* ── Socle du thème (valeurs du mode SOMBRE, défaut du site public) ─────── */
-  --color-ink:         #05060F;  /* fond de page — nuit indigo                */
-  --color-ink-alt:     #0A0C1B;  /* bandes alternées                          */
-  --color-panel:       #10132A;  /* cartes                                    */
-  --color-panel-2:     #161A38;  /* cartes survolées / champs                 */
-  --color-panel-3:     #1F2450;  /* creux profonds                            */
-  --color-line:        rgba(124, 92, 255, 0.16);
-  --color-line-soft:   rgba(255, 255, 255, 0.07);
+  /* ── Socle du thème (valeurs du mode CLAIR, défaut partout) ─────────────── */
+  --color-ink:         #FFFFFF;  /* fond de page — blanc Avis                 */
+  --color-ink-alt:     #F4F4F4;  /* bandes alternées                          */
+  --color-panel:       #FFFFFF;  /* cartes                                    */
+  --color-panel-2:     #F8F8F8;  /* cartes survolées / champs                 */
+  --color-panel-3:     #EDEDED;  /* creux                                     */
+  --color-line:        #DEDEDE;
+  --color-line-soft:   #EDEDED;
 
-  --color-title:       #F5F6FF;  /* titres                                    */
-  --color-body:        #C7CBEA;  /* texte courant                             */
-  --color-muted:       #8A90BC;  /* texte atténué                             */
-  --color-faint:       #5C628C;  /* texte discret                             */
+  --color-title:       #000000;  /* titres — noir pur, comme Avis             */
+  --color-body:        #333333;  /* texte courant                             */
+  --color-muted:       #736D6D;  /* texte atténué (gris Avis officiel)        */
+  --color-faint:       #9B9595;  /* texte discret                             */
 
-  /* ── Rayons & ombres ────────────────────────────────────────────────────── */
-  --shadow-panel: 0 1px 2px rgba(0, 0, 0, 0.45), 0 12px 40px rgba(0, 0, 0, 0.38);
-  --shadow-lift:  0 18px 50px rgba(0, 0, 0, 0.5);
-  --shadow-iris:  0 10px 34px rgba(124, 92, 255, 0.32);
-  --shadow-aqua:  0 10px 34px rgba(34, 211, 238, 0.26);
+  /* ── Rayons : Avis est une interface plate, presque à angles droits ─────── */
+  --radius-xs:   1px;
+  --radius-sm:   2px;
+  --radius-md:   2px;
+  --radius-lg:   4px;
+  --radius-xl:   4px;
+  --radius-2xl:  4px;
+  --radius-3xl:  6px;
+  --radius-4xl:  8px;
 
-  /* ── Courbes d'animation ────────────────────────────────────────────────── */
-  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  /* ── Ombres : nettes et discrètes, jamais colorées ──────────────────────── */
+  --shadow-panel: 0 1px 2px rgba(0, 0, 0, 0.06), 0 2px 10px rgba(0, 0, 0, 0.07);
+  --shadow-lift:  0 4px 12px rgba(0, 0, 0, 0.10), 0 16px 40px rgba(0, 0, 0, 0.10);
+  --shadow-iris:  0 2px 6px rgba(145, 0, 29, 0.24);
+  --shadow-aqua:  0 2px 6px rgba(39, 69, 92, 0.22);
+
+  /* ── Courbes d'animation : l'ease standard relevé sur avis.com ─────────── */
+  --ease-out-soft: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ============================================================================
-   MODE CLAIR — mêmes variables, valeurs claires.
+   MODE SOMBRE — les bandeaux noirs d'Avis, mêmes variables, valeurs sombres.
+   Le rouge est légèrement éclairci pour rester lisible sur noir.
    ============================================================================ */
-:root[data-theme="light"] {
-  --color-ink:       #F5F6FC;
-  --color-ink-alt:   #FFFFFF;
-  --color-panel:     #FFFFFF;
-  --color-panel-2:   #F2F3FB;
-  --color-panel-3:   #E6E8F6;
-  --color-line:      rgba(91, 59, 224, 0.14);
-  --color-line-soft: rgba(15, 18, 45, 0.07);
+:root[data-theme="dark"] {
+  --color-ink:       #0D0D0B;
+  --color-ink-alt:   #000000;
+  --color-panel:     #1A1A18;
+  --color-panel-2:   #242422;
+  --color-panel-3:   #302F2D;
+  --color-line:      rgba(255, 255, 255, 0.14);
+  --color-line-soft: rgba(255, 255, 255, 0.08);
 
-  --color-title:     #0D1030;
-  --color-body:      #363C66;
-  --color-muted:     #656B94;
-  --color-faint:     #9297BB;
+  --color-title:     #FFFFFF;
+  --color-body:      rgba(255, 255, 255, 0.82);
+  --color-muted:     #C1C1C1;
+  --color-faint:     #8E8A8A;
 
-  /* Le violet doit rester lisible sur fond clair : on l'assombrit d'un cran. */
-  --color-iris:       #5B3BE0;
-  --color-iris-light: #7C5CFF;
-  --color-iris-dark:  #3D22B0;
-  --color-aqua:       #0E9BB8;
-  --color-aqua-light: #22D3EE;
-  --color-magenta:    #DB2777;
+  --color-iris:       #E8113C;
+  --color-iris-light: #FF4D6D;
+  --color-iris-dark:  #D4002A;
+  --color-aqua:       #7FA8C4;
+  --color-aqua-light: #A6C6DB;
+  --color-magenta:    #E8113C;
 
-  --color-iris-glow: rgba(91, 59, 224, 0.22);
-  --color-iris-soft: rgba(91, 59, 224, 0.07);
-  --color-aqua-glow: rgba(14, 155, 184, 0.18);
-  --color-aqua-soft: rgba(14, 155, 184, 0.07);
+  --color-iris-glow: rgba(232, 17, 60, 0.36);
+  --color-iris-soft: rgba(232, 17, 60, 0.12);
+  --color-aqua-glow: rgba(127, 168, 196, 0.26);
+  --color-aqua-soft: rgba(127, 168, 196, 0.10);
 
-  --shadow-panel: 0 1px 2px rgba(13, 16, 48, 0.05), 0 10px 32px rgba(13, 16, 48, 0.07);
-  --shadow-lift:  0 18px 46px rgba(13, 16, 48, 0.12);
-  --shadow-iris:  0 10px 30px rgba(91, 59, 224, 0.22);
-  --shadow-aqua:  0 10px 30px rgba(14, 155, 184, 0.2);
+  --shadow-panel: 0 1px 2px rgba(0, 0, 0, 0.6), 0 8px 26px rgba(0, 0, 0, 0.45);
+  --shadow-lift:  0 16px 44px rgba(0, 0, 0, 0.6);
+  --shadow-iris:  0 2px 10px rgba(232, 17, 60, 0.4);
+  --shadow-aqua:  0 2px 10px rgba(127, 168, 196, 0.3);
 }
 
 /* ============================================================================
@@ -129,7 +147,13 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  transition: background-color 0.4s var(--ease-out-soft), color 0.4s var(--ease-out-soft);
+  transition: background-color 0.25s var(--ease-out-soft), color 0.25s var(--ease-out-soft);
+}
+
+/* Avis compose TOUS ses titres en capitales serrées : on l'applique au niveau
+   de la police d'affichage plutôt que d'annoter chaque titre du code. */
+h1, h2, h3, h4, .font-display {
+  letter-spacing: -0.02em;
 }
 
 ::selection {
@@ -141,11 +165,11 @@ body {
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: var(--color-ink-alt); }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--color-iris), var(--color-aqua));
-  border-radius: 999px;
-  border: 2px solid var(--color-ink-alt);
+  background: var(--color-iris);
+  border-radius: 0;
+  border: 3px solid var(--color-ink-alt);
 }
-::-webkit-scrollbar-thumb:hover { background: var(--color-iris); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-iris-dark); }
 
 /* Champs de formulaire : un seul rendu pour toute l'application */
 input[type="date"],
@@ -171,12 +195,10 @@ a:focus-visible,
    COMPOSANTS UTILITAIRES
    ============================================================================ */
 
-/* ── Surface vitrée : la carte de base de tout le site ──────────────────── */
+/* ── Surface de base : chez Avis, une carte est une surface pleine, nette ── */
 .glass {
-  background: color-mix(in srgb, var(--color-panel) 88%, transparent);
+  background: var(--color-panel);
   border: 1px solid var(--color-line);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
 }
 
 .glass-strong {
@@ -185,88 +207,98 @@ a:focus-visible,
   box-shadow: var(--shadow-panel);
 }
 
-/* ── Bouton principal : dégradé aurore + lueur ─────────────────────────── */
+/* ── Bouton principal : le rouge plein d'Avis ──────────────────────────── */
 .btn-aurora {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border-radius: 0.875rem;
+  border-radius: 4px;
   font-family: var(--font-display);
   font-weight: 700;
+  letter-spacing: 0.01em;
   color: #fff;
-  background: linear-gradient(120deg, var(--color-iris-dark), var(--color-iris) 45%, var(--color-aqua));
-  background-size: 200% 200%;
-  background-position: 0% 50%;
-  box-shadow: var(--shadow-iris);
+  background: var(--color-iris);
+  box-shadow: none;
   border: none;
   cursor: pointer;
   overflow: hidden;
-  transition: background-position 0.6s var(--ease-out-soft),
-              transform 0.25s var(--ease-spring),
-              box-shadow 0.3s var(--ease-out-soft);
+  transition: background-color 0.25s var(--ease-out-soft),
+              box-shadow 0.25s var(--ease-out-soft),
+              transform 0.25s var(--ease-out-soft);
 }
 .btn-aurora:hover:not(:disabled) {
-  background-position: 100% 50%;
-  transform: translateY(-2px);
-  box-shadow: 0 16px 42px var(--color-iris-glow);
+  background: var(--color-iris-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-iris);
 }
-.btn-aurora:active:not(:disabled) { transform: translateY(0) scale(0.98); }
-.btn-aurora:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+.btn-aurora:active:not(:disabled) { transform: translateY(0); background: var(--color-iris-deep); }
+.btn-aurora:disabled { opacity: 0.38; cursor: not-allowed; box-shadow: none; }
 
-/* Reflet qui balaie le bouton au survol */
+/* Reflet qui balaie le bouton au survol — la seule fantaisie qu'Avis s'autorise */
 .btn-aurora::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.28) 50%, transparent 65%);
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.22) 50%, transparent 62%);
   transform: translateX(-120%);
-  transition: transform 0.75s var(--ease-out-soft);
+  transition: transform 0.6s var(--ease-out-soft);
 }
 .btn-aurora:hover:not(:disabled)::after { transform: translateX(120%); }
 
-/* ── Bouton secondaire : contour seul ──────────────────────────────────── */
+/* ── Bouton secondaire : contour noir, remplissage au survol (pattern Avis) ─ */
 .btn-ghost {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border-radius: 0.875rem;
+  border-radius: 4px;
   font-family: var(--font-display);
   font-weight: 700;
   color: var(--color-title);
-  background: color-mix(in srgb, var(--color-panel-2) 70%, transparent);
-  border: 1px solid var(--color-line);
+  background: transparent;
+  border: 2px solid var(--color-title);
   cursor: pointer;
-  transition: all 0.25s var(--ease-out-soft);
+  transition: background-color 0.25s var(--ease-out-soft),
+              color 0.25s var(--ease-out-soft),
+              border-color 0.25s var(--ease-out-soft);
 }
 .btn-ghost:hover:not(:disabled) {
-  border-color: var(--color-iris);
-  color: var(--color-iris);
-  background: var(--color-iris-soft);
-  transform: translateY(-1px);
+  background: var(--color-title);
+  color: var(--color-ink);
+  border-color: var(--color-title);
 }
-.btn-ghost:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-ghost:disabled { opacity: 0.38; cursor: not-allowed; }
 
-/* ── Champ de saisie standard ──────────────────────────────────────────── */
+/* Variante posée sur une photo sombre */
+.btn-ghost-invert {
+  border-color: #fff;
+  color: #fff;
+}
+.btn-ghost-invert:hover:not(:disabled) {
+  background: #fff;
+  color: #000;
+}
+
+/* ── Champ de saisie standard : soulignement rouge au focus ────────────── */
 .field {
   width: 100%;
   padding: 0.75rem 1rem;
-  border-radius: 0.875rem;
-  background: var(--color-panel-2);
+  border-radius: 4px;
+  background: var(--color-panel);
   border: 1px solid var(--color-line);
   color: var(--color-title);
   font-size: 0.875rem;
   font-weight: 500;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  transition: border-color 0.25s var(--ease-out-soft), box-shadow 0.25s var(--ease-out-soft);
 }
 .field::placeholder { color: var(--color-faint); font-weight: 400; }
-.field:hover { border-color: color-mix(in srgb, var(--color-iris) 45%, transparent); }
+.field:hover { border-color: var(--color-muted); }
 .field:focus {
   border-color: var(--color-iris);
-  box-shadow: 0 0 0 4px var(--color-iris-soft);
+  box-shadow: 0 0 0 3px var(--color-iris-soft);
   outline: none;
 }
 
@@ -277,50 +309,95 @@ a:focus-visible,
   font-family: var(--font-display);
   font-size: 0.6875rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--color-muted);
+  color: var(--color-title);
   margin-bottom: 0.5rem;
 }
 
-/* ── Texte en dégradé aurore ───────────────────────────────────────────── */
+/* ── Accent de marque appliqué à un fragment de titre ──────────────────── */
 .text-aurora {
-  background: linear-gradient(110deg, var(--color-iris-light), var(--color-aqua) 50%, var(--color-magenta));
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: aurora-pan 8s linear infinite;
-}
-@keyframes aurora-pan {
-  to { background-position: 200% center; }
+  color: var(--color-iris);
+  -webkit-text-fill-color: currentColor;
 }
 
-/* ── Cadre à bordure animée (cartes véhicule mises en avant) ───────────── */
+/* Sur une photo sombre, le rouge Avis reste lisible : on l'éclaircit. */
+.on-photo .text-aurora { color: #FF4D6D; }
+
+/* ── Titre « Avis Headline » : capitales serrées, interlignage 1.0 ─────── */
+.avis-headline {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+/* ── Liseré rouge de 4px : la signature des blocs de contenu d'Avis ────── */
+.avis-bar {
+  border-left: 4px solid var(--color-iris);
+  padding-left: 1.25rem;
+}
+
+/* ── Bandeau bordeaux plein largeur (les bandes « partenaires » d'Avis) ── */
+.avis-band {
+  background: linear-gradient(0deg, #85000F 20%, #410105 100%);
+  color: #fff;
+}
+
+/* ── Voile de lisibilité posé sur une photo pleine largeur ─────────────── */
+.avis-scrim-left::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.55) 45%, rgba(0, 0, 0, 0.1) 100%);
+  pointer-events: none;
+}
+.avis-scrim-bottom::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.25) 42%, transparent 72%);
+  pointer-events: none;
+}
+
+/* ── Lien fléché : le « → » d'Avis qui avance au survol ────────────────── */
+.avis-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: inherit;
+}
+.avis-arrow svg,
+.avis-arrow .arrow {
+  transition: transform 0.25s var(--ease-out-soft);
+}
+.avis-arrow:hover svg,
+.avis-arrow:hover .arrow,
+.group:hover .avis-arrow svg {
+  transform: translateX(6px);
+}
+
+/* ── Cadre survolé : chez Avis, la carte prend un contour rouge net ────── */
 .ring-aurora {
   position: relative;
+  transition: box-shadow 0.25s var(--ease-out-soft);
 }
 .ring-aurora::before {
   content: "";
   position: absolute;
-  inset: -1px;
+  inset: 0;
   border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(130deg, var(--color-iris), var(--color-aqua), var(--color-magenta), var(--color-iris));
-  background-size: 300% 300%;
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
+  border: 2px solid var(--color-iris);
   opacity: 0;
-  transition: opacity 0.4s var(--ease-out-soft);
-  animation: aurora-rotate 6s linear infinite;
+  transition: opacity 0.25s var(--ease-out-soft);
   pointer-events: none;
+  z-index: 3;
 }
 .ring-aurora:hover::before,
 .ring-aurora:focus-within::before { opacity: 1; }
-@keyframes aurora-rotate {
-  to { background-position: 300% 50%; }
-}
 
 /* ── Voile lumineux qui suit la souris sur une carte ───────────────────── */
 .spotlight {
@@ -333,12 +410,12 @@ a:focus-visible,
   inset: 0;
   border-radius: inherit;
   background: radial-gradient(
-    240px circle at var(--mx, 50%) var(--my, 50%),
+    260px circle at var(--mx, 50%) var(--my, 50%),
     var(--color-iris-soft),
     transparent 70%
   );
   opacity: 0;
-  transition: opacity 0.35s var(--ease-out-soft);
+  transition: opacity 0.25s var(--ease-out-soft);
   pointer-events: none;
   z-index: 1;
 }
@@ -380,6 +457,15 @@ a:focus-visible,
   background-size: 64px 64px;
 }
 
+/* ── Zoom lent d'une photo de fond (le « Ken Burns » des héros d'Avis) ─── */
+.avis-kenburns {
+  animation: kenburns 22s ease-in-out infinite alternate;
+}
+@keyframes kenburns {
+  from { transform: scale(1.04); }
+  to   { transform: scale(1.14); }
+}
+
 /* ── Pulsation « disponible » ──────────────────────────────────────────── */
 .dot-live {
   position: relative;
@@ -418,3 +504,5 @@ a:focus-visible,
    SENS DE LECTURE ARABE
    ============================================================================ */
 [dir="rtl"] .rtl-flip { transform: scaleX(-1); }
+[dir="rtl"] .avis-bar { border-left: none; border-right: 4px solid var(--color-iris); padding-left: 0; padding-right: 1.25rem; }
+[dir="rtl"] .avis-arrow:hover svg { transform: translateX(-6px) scaleX(-1); }

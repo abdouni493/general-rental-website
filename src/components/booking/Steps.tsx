@@ -323,7 +323,7 @@ export const StepPickup: React.FC = () => {
       ) : availablePoints.length === 0 ? (
         <div
           className="rounded-2xl p-5 flex items-start gap-3"
-          style={{ background: 'rgba(251, 191, 36, 0.09)', border: '1px solid rgba(251, 191, 36, 0.3)' }}
+          style={{ background: 'rgba(176, 123, 18, 0.09)', border: '1px solid rgba(176, 123, 18, 0.3)' }}
         >
           <AlertTriangle size={18} style={{ color: 'var(--color-amber)' }} className="shrink-0 mt-0.5" />
           <p className="text-sm" style={{ color: 'var(--color-body)' }}>
@@ -572,7 +572,7 @@ const AssuranceOption: React.FC<{
             className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-semibold"
             style={{
               color: it.status ? 'var(--color-mint)' : 'var(--color-faint)',
-              background: it.status ? 'rgba(52, 211, 153, 0.1)' : 'var(--color-panel-3)',
+              background: it.status ? 'rgba(70, 130, 84, 0.1)' : 'var(--color-panel-3)',
               textDecoration: it.status ? 'none' : 'line-through',
             }}
           >
@@ -672,7 +672,7 @@ export const StepServices: React.FC = () => {
                           {service.isMandatory && (
                             <span
                               className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold mt-1.5"
-                              style={{ color: 'var(--color-amber)', background: 'rgba(251,191,36,0.12)' }}
+                              style={{ color: 'var(--color-amber)', background: 'rgba(176,123,18,0.12)' }}
                             >
                               <Lock size={8} /> {lang === 'fr' ? 'Obligatoire' : 'إلزامي'}
                             </span>

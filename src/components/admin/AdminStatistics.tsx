@@ -409,7 +409,7 @@ const ReservationRow: React.FC<{
       <button onClick={onToggle} className="w-full text-left px-5 py-4 flex items-center gap-4 transition-colors hover:bg-[var(--color-panel-2)]">
         <span
           className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-          style={{ background: sent ? 'rgba(52,211,153,0.12)' : 'rgba(251,113,133,0.12)' }}
+          style={{ background: sent ? 'rgba(70,130,84,0.12)' : 'rgba(194,14,26,0.12)' }}
         >
           {sent
             ? <CheckCircle2 size={16} style={{ color: 'var(--color-mint)' }} />

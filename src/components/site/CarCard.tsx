@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import {
-  motion, useScroll, useTransform, useSpring, useMotionValue, useReducedMotion, type MotionValue,
+  motion, useScroll, useTransform, useSpring, useReducedMotion,
 } from 'motion/react';
 import { Fuel, Cog, Users, DoorOpen, ArrowRight, Tag } from 'lucide-react';
 import type { Car, SpecialOffer, Language } from '../../types';
@@ -21,8 +21,13 @@ import { AgencyBadge } from '../ui/Primitives';
 //      une fois pour toutes.
 //   2. PARALLAXE D'IMAGE — la photo glisse plus lentement que la carte, ce qui
 //      donne de la profondeur à la grille pendant le défilement.
-//   3. INCLINAISON 3D AU SURVOL — la carte s'oriente vers le curseur et un
-//      halo violet le suit (variables --mx / --my lues par .spotlight).
+//   3. HALO AU SURVOL — un voile rouge suit le curseur (variables --mx / --my
+//      lues par .spotlight) et la carte prend le contour rouge d'Avis.
+//
+// Habillage : carte blanche à angles vifs, photo 16/9 coiffée d'un voile noir,
+// titre en capitales posé dessus et tarif en rouge de marque — la « offer card »
+// d'avis.com transposée au portail. L'inclinaison 3D de l'ancien thème a été
+// retirée : l'interface d'Avis est strictement plane.
 // ============================================================================
 
 interface CarCardProps {
@@ -49,34 +54,19 @@ export const CarCard: React.FC<CarCardProps> = ({
   });
   const eased = useSpring(scrollYProgress, { stiffness: 110, damping: 26, restDelta: 0.001 });
 
-  const y        = useTransform(eased, [0, 0.22, 0.85, 1], [64, 0, 0, -26]);
-  const opacity  = useTransform(eased, [0, 0.18, 0.9, 1], [0, 1, 1, 0.35]);
-  const scale    = useTransform(eased, [0, 0.24, 0.88, 1], [0.9, 1, 1, 0.97]);
-  const rotateX  = useTransform(eased, [0, 0.26], [11, 0]);
-  const blurPx   = useTransform(eased, [0, 0.2], [7, 0]);
-  const filter   = useTransform(blurPx, (v: number) => `blur(${Math.max(0, v).toFixed(2)}px)`);
+  const y        = useTransform(eased, [0, 0.22, 0.9, 1], [48, 0, 0, -14]);
+  const opacity  = useTransform(eased, [0, 0.18, 0.92, 1], [0, 1, 1, 0.55]);
 
   // ── 2. Parallaxe de l'image ───────────────────────────────────────────────
   const imageY = useTransform(eased, [0, 1], ['-7%', '7%']);
 
-  // ── 3. Inclinaison au survol ──────────────────────────────────────────────
-  const tiltX = useMotionValue(0);
-  const tiltY = useMotionValue(0);
-  const springTiltX = useSpring(tiltX, { stiffness: 260, damping: 22 });
-  const springTiltY = useSpring(tiltY, { stiffness: 260, damping: 22 });
-
+  // ── 3. Halo au survol ─────────────────────────────────────────────────────
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (reduce) return;
     const rect = e.currentTarget.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width;
-    const py = (e.clientY - rect.top) / rect.height;
-    tiltY.set((px - 0.5) * 11);
-    tiltX.set((0.5 - py) * 9);
-    e.currentTarget.style.setProperty('--mx', `${px * 100}%`);
-    e.currentTarget.style.setProperty('--my', `${py * 100}%`);
+    e.currentTarget.style.setProperty('--mx', `${((e.clientX - rect.left) / rect.width) * 100}%`);
+    e.currentTarget.style.setProperty('--my', `${((e.clientY - rect.top) / rect.height) * 100}%`);
   };
-
-  const handlePointerLeave = () => { tiltX.set(0); tiltY.set(0); };
 
   const accent = agencyColor(car.agencyColor);
   const effectivePrice = offer ? offer.newPrice : car.priceDay;
@@ -89,9 +79,7 @@ export const CarCard: React.FC<CarCardProps> = ({
   ];
 
   // Le mode « animations réduites » garde un fondu simple et rien d'autre.
-  const motionStyle = reduce
-    ? {}
-    : { y, opacity, scale, rotateX, filter, transformPerspective: 1100 as any };
+  const motionStyle = reduce ? {} : { y, opacity };
 
   return (
     <motion.div
@@ -104,7 +92,6 @@ export const CarCard: React.FC<CarCardProps> = ({
     >
       <motion.article
         onPointerMove={handlePointerMove}
-        onPointerLeave={handlePointerLeave}
         onClick={() => onOpen(car)}
         onKeyDown={e => {
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen(car); }
@@ -116,32 +103,31 @@ export const CarCard: React.FC<CarCardProps> = ({
             ? `${car.brand} ${car.model} chez ${car.agencyName} — voir les détails`
             : `${car.brand} ${car.model} — ${car.agencyName}`
         }
-        className="ring-aurora spotlight group relative rounded-2xl overflow-hidden cursor-pointer flex flex-col h-full outline-none"
+        whileHover={reduce ? undefined : { y: -4 }}
+        transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+        className="ring-aurora spotlight group relative overflow-hidden cursor-pointer flex flex-col h-full outline-none"
         style={{
           background: 'var(--color-panel)',
           border: '1px solid var(--color-line)',
           boxShadow: 'var(--shadow-panel)',
-          transformStyle: 'preserve-3d',
-          // L'inclinaison au survol vit sur le même style que l'habillage :
-          // deux attributs `style` s'annuleraient l'un l'autre.
-          ...(reduce ? {} : { rotateX: springTiltX, rotateY: springTiltY, transformPerspective: 1100 }),
+          borderRadius: '4px',
         }}
       >
-        {/* ── Visuel ── */}
-        <div className="relative aspect-[4/3] overflow-hidden" style={{ background: 'var(--color-panel-3)' }}>
+        {/* ── Visuel : le cadrage 16/9 des cartes d'offre d'Avis ── */}
+        <div className="relative aspect-[16/10] overflow-hidden" style={{ background: 'var(--color-panel-3)' }}>
           <motion.img
             src={car.image}
             alt={`${car.brand} ${car.model}`}
             loading="lazy"
             referrerPolicy="no-referrer"
-            style={reduce ? {} : { y: imageY, scale: 1.16 }}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.22]"
+            style={reduce ? {} : { y: imageY, scale: 1.12 }}
+            className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.18]"
           />
 
-          {/* Dégradé de lisibilité */}
+          {/* Voile noir de lisibilité — le scrim des visuels d'Avis */}
           <div
             className="absolute inset-0 pointer-events-none"
-            style={{ background: 'linear-gradient(to top, rgba(5,6,15,0.82) 0%, rgba(5,6,15,0.15) 45%, transparent 70%)' }}
+            style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.25) 42%, transparent 72%)' }}
           />
 
           {/* Pastille d'agence — l'information la plus importante de la carte */}
@@ -154,13 +140,8 @@ export const CarCard: React.FC<CarCardProps> = ({
           {/* Année */}
           {car.year && (
             <div
-              className="absolute top-3 right-3 z-10 px-2 py-0.5 rounded-lg text-[10px] font-black backdrop-blur-md"
-              style={{
-                color: 'var(--color-aqua-light)',
-                background: 'rgba(5,6,15,0.55)',
-                border: '1px solid var(--color-aqua-soft)',
-                fontFamily: 'var(--font-display)',
-              }}
+              className="absolute top-3 right-3 z-10 px-2 py-1 text-[10px] font-extrabold tracking-wide text-white"
+              style={{ background: 'rgba(0,0,0,0.72)', fontFamily: 'var(--font-display)' }}
             >
               {car.year}
             </div>
@@ -172,25 +153,18 @@ export const CarCard: React.FC<CarCardProps> = ({
               initial={{ scale: 0.6, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 400, damping: 18, delay: 0.1 }}
-              className="absolute bottom-3 right-3 z-10 px-2.5 py-1 rounded-lg text-[11px] font-black text-white flex items-center gap-1"
-              style={{
-                background: 'linear-gradient(135deg, var(--color-magenta), var(--color-magenta-dark))',
-                boxShadow: '0 6px 18px rgba(244, 113, 181, 0.4)',
-                fontFamily: 'var(--font-display)',
-              }}
+              transition={{ duration: 0.25, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
+              className="absolute top-3 right-3 z-20 px-2.5 py-1 text-[11px] font-extrabold text-white flex items-center gap-1"
+              style={{ background: 'var(--color-iris)', fontFamily: 'var(--font-display)' }}
             >
               <Tag size={11} /> −{discountPercent(offer)}%
             </motion.div>
           )}
 
           {/* Nom du véhicule, posé sur le visuel */}
-          <div className="absolute bottom-3 left-3 right-24 z-10">
-            <h3
-              className="font-black text-base leading-tight truncate"
-              style={{ color: '#F5F6FF', fontFamily: 'var(--font-display)', textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}
-            >
-              {car.brand} <span style={{ color: 'var(--color-aqua-light)' }}>{car.model}</span>
+          <div className="absolute bottom-3 left-3 right-4 z-10">
+            <h3 className="avis-headline text-lg truncate text-white">
+              {car.brand} <span style={{ color: '#FF4D6D' }}>{car.model}</span>
             </h3>
           </div>
         </div>
@@ -202,11 +176,11 @@ export const CarCard: React.FC<CarCardProps> = ({
             {specs.map((s, i) => (
               <span
                 key={i}
-                className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-semibold"
+                className="inline-flex items-center gap-1 px-2 py-1 text-[10px] font-semibold"
                 style={{
                   color: 'var(--color-body)',
                   background: 'var(--color-panel-2)',
-                  border: '1px solid var(--color-line-soft)',
+                  border: '1px solid var(--color-line)',
                 }}
               >
                 <s.icon size={10} style={{ color: accent }} /> {s.value}
@@ -214,18 +188,17 @@ export const CarCard: React.FC<CarCardProps> = ({
             ))}
           </div>
 
-          {/* Tarif */}
-          <div className="flex items-end justify-between gap-2 mt-auto pt-1">
+          {/* Tarif : prix sur sa propre ligne, bouton pleine largeur dessous —
+              la mise en page des cartes d'offre d'Avis, qui ne tronque jamais
+              le montant quelle que soit la largeur de la colonne. */}
+          <div className="flex flex-col gap-3 mt-auto pt-1">
             <div className="min-w-0">
               {offer && (
                 <p className="text-[11px] line-through leading-none mb-0.5" style={{ color: 'var(--color-faint)' }}>
                   {money(offer.oldPrice, lang)}
                 </p>
               )}
-              <p
-                className="font-black text-xl leading-none truncate"
-                style={{ color: 'var(--color-title)', fontFamily: 'var(--font-display)' }}
-              >
+              <p className="avis-headline text-2xl" style={{ color: 'var(--color-iris)' }}>
                 {money(effectivePrice, lang)}
                 <span className="text-[11px] font-bold ml-1" style={{ color: 'var(--color-muted)' }}>
                   /{lang === 'fr' ? 'jour' : 'يوم'}
@@ -234,10 +207,10 @@ export const CarCard: React.FC<CarCardProps> = ({
             </div>
 
             <motion.button
-              whileHover={{ scale: 1.06 }}
-              whileTap={{ scale: 0.94 }}
+              whileHover={{ y: -1 }}
+              whileTap={{ y: 0 }}
               onClick={e => { e.stopPropagation(); onBook(car); }}
-              className="btn-aurora h-10 px-4 text-xs shrink-0"
+              className="btn-aurora avis-arrow h-11 w-full text-xs uppercase tracking-[0.04em]"
               aria-label={lang === 'fr' ? `Réserver ${car.brand} ${car.model}` : `احجز ${car.brand} ${car.model}`}
             >
               {lang === 'fr' ? 'Réserver' : 'احجز'} <ArrowRight size={14} />
@@ -246,8 +219,8 @@ export const CarCard: React.FC<CarCardProps> = ({
 
           {/* Liseré de la couleur de l'agence, révélé au survol */}
           <span
-            className="absolute bottom-0 left-0 h-[3px] w-0 group-hover:w-full transition-all duration-500"
-            style={{ background: `linear-gradient(90deg, ${accent}, transparent)` }}
+            className="absolute bottom-0 left-0 h-[3px] w-0 group-hover:w-full transition-all duration-500 ease-out"
+            style={{ background: accent }}
           />
         </div>
       </motion.article>
@@ -262,17 +235,17 @@ export const CarCardSkeleton: React.FC<{ index?: number }> = ({ index = 0 }) => 
     initial={{ opacity: 0, y: 16 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay: index * 0.06 }}
-    className="rounded-2xl overflow-hidden"
-    style={{ background: 'var(--color-panel)', border: '1px solid var(--color-line)' }}
+    className="overflow-hidden"
+    style={{ background: 'var(--color-panel)', border: '1px solid var(--color-line)', borderRadius: '4px' }}
   >
-    <div className="aspect-[4/3] skeleton" />
+    <div className="aspect-[16/10] skeleton" />
     <div className="p-4 space-y-3">
       <div className="flex gap-1.5">
-        {[0, 1, 2, 3].map(i => <div key={i} className="h-6 w-14 rounded-lg skeleton" />)}
+        {[0, 1, 2, 3].map(i => <div key={i} className="h-6 w-14 skeleton" />)}
       </div>
-      <div className="flex items-end justify-between gap-2">
-        <div className="h-7 w-24 rounded-lg skeleton" />
-        <div className="h-10 w-24 rounded-xl skeleton" />
+      <div className="flex flex-col gap-3">
+        <div className="h-7 w-28 skeleton" />
+        <div className="h-11 w-full skeleton" />
       </div>
     </div>
   </motion.div>

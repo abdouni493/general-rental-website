@@ -145,7 +145,7 @@ export const AdminLayout: React.FC = () => {
         <button
           onClick={handleSignOut}
           className="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-bold transition-all duration-200"
-          style={{ color: 'var(--color-coral)', background: 'rgba(251,113,133,0.08)', border: '1px solid rgba(251,113,133,0.2)', fontFamily: 'var(--font-display)' }}
+          style={{ color: 'var(--color-coral)', background: 'rgba(194,14,26,0.08)', border: '1px solid rgba(194,14,26,0.2)', fontFamily: 'var(--font-display)' }}
         >
           <LogOut size={16} className="shrink-0" />
           <span className="flex-1 text-left">Se déconnecter</span>
@@ -193,7 +193,7 @@ export const AdminLayout: React.FC = () => {
               exit={{ opacity: 0 }}
               onClick={() => setMobileOpen(false)}
               className="lg:hidden fixed inset-0 z-40"
-              style={{ background: 'rgba(5,6,15,0.6)', backdropFilter: 'blur(4px)' }}
+              style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}
             />
             <motion.aside
               initial={{ x: -300 }}

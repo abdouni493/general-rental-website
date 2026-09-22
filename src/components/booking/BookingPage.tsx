@@ -335,7 +335,7 @@ const SuccessScreen: React.FC = () => {
           className="relative w-20 h-20 rounded-3xl mx-auto mb-6 flex items-center justify-center"
           style={{
             background: 'linear-gradient(135deg, var(--color-mint), var(--color-aqua))',
-            boxShadow: '0 14px 40px rgba(52, 211, 153, 0.34)',
+            boxShadow: '0 14px 40px rgba(70, 130, 84, 0.34)',
           }}
         >
           <PartyPopper size={34} className="text-white" />
@@ -402,7 +402,7 @@ const SuccessScreen: React.FC = () => {
 
         <div
           className="rounded-xl p-3.5 flex items-start gap-2.5 mb-7 text-left relative"
-          style={{ background: 'rgba(52, 211, 153, 0.08)', border: '1px solid rgba(52, 211, 153, 0.25)' }}
+          style={{ background: 'rgba(70, 130, 84, 0.08)', border: '1px solid rgba(70, 130, 84, 0.25)' }}
         >
           <Phone size={15} style={{ color: 'var(--color-mint)' }} className="shrink-0 mt-0.5" />
           <p className="text-xs leading-relaxed" style={{ color: 'var(--color-body)' }}>

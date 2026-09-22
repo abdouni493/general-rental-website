@@ -25,7 +25,7 @@ import type { PartnerAgency, AgencyHealth } from '../../types';
 const EMPTY: AgencyConnectionInput = {
   name: '', slug: '', city: '',
   supabaseUrl: '', anonKey: '',
-  logoUrl: '', brandColor: '#7C5CFF',
+  logoUrl: '', brandColor: '#D4002A',
   phone: '', email: '', address: '',
   isActive: true, displayOrder: 0,
 };
@@ -53,7 +53,7 @@ export const AgencyConnectionModal: React.FC<{
         supabaseUrl: agency.supabaseUrl,
         anonKey: agency.anonKey,
         logoUrl: agency.logoUrl || '',
-        brandColor: agency.brandColor || '#7C5CFF',
+        brandColor: agency.brandColor || '#D4002A',
         phone: agency.phone || '',
         email: agency.email || '',
         address: agency.address || '',
@@ -154,7 +154,7 @@ export const AgencyConnectionModal: React.FC<{
         {error && (
           <div
             className="rounded-xl px-4 py-3 flex items-start gap-2.5"
-            style={{ background: 'rgba(251,113,133,0.1)', border: '1px solid rgba(251,113,133,0.3)' }}
+            style={{ background: 'rgba(194,14,26,0.1)', border: '1px solid rgba(194,14,26,0.3)' }}
           >
             <AlertTriangle size={16} style={{ color: 'var(--color-coral)' }} className="shrink-0 mt-0.5" />
             <p className="text-xs" style={{ color: 'var(--color-title)' }}>{error}</p>
@@ -266,8 +266,8 @@ export const AgencyConnectionModal: React.FC<{
           <div
             className="rounded-2xl p-4"
             style={{
-              background: health.reachable && !health.error ? 'rgba(52,211,153,0.08)' : 'rgba(251,191,36,0.08)',
-              border: `1px solid ${health.reachable && !health.error ? 'rgba(52,211,153,0.3)' : 'rgba(251,191,36,0.3)'}`,
+              background: health.reachable && !health.error ? 'rgba(70,130,84,0.08)' : 'rgba(176,123,18,0.08)',
+              border: `1px solid ${health.reachable && !health.error ? 'rgba(70,130,84,0.3)' : 'rgba(176,123,18,0.3)'}`,
             }}
           >
             <div className="flex items-start gap-3">
@@ -304,7 +304,7 @@ export const AgencyConnectionModal: React.FC<{
             <div className="flex gap-2.5">
               <input
                 type="color"
-                value={/^#[0-9a-f]{6}$/i.test(form.brandColor) ? form.brandColor : '#7C5CFF'}
+                value={/^#[0-9a-f]{6}$/i.test(form.brandColor) ? form.brandColor : '#D4002A'}
                 onChange={e => set('brandColor', e.target.value)}
                 className="w-12 h-[46px] rounded-xl cursor-pointer shrink-0"
                 style={{ background: 'var(--color-panel-2)', border: '1px solid var(--color-line)' }}
@@ -314,7 +314,7 @@ export const AgencyConnectionModal: React.FC<{
                 className="field font-mono text-xs"
                 value={form.brandColor}
                 onChange={e => set('brandColor', e.target.value)}
-                placeholder="#7C5CFF"
+                placeholder="#D4002A"
               />
             </div>
           </Field>

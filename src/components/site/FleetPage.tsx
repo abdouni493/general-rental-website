@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Search, SlidersHorizontal, X, Car as CarIcon, ArrowUpDown, Fuel, Cog, Loader2 } from 'lucide-react';
 
+import { PageHero, HERO_IMAGES } from './PageHero';
 import { useApp } from '../../context/AppContext';
 import { CarCard, CarCardSkeleton } from './CarCard';
 import { CarDetailsModal } from './CarDetailsModal';
@@ -71,37 +72,26 @@ export const FleetPage: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen pt-28 pb-24 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen pb-24"
       style={{ background: 'var(--color-ink)' }}
     >
-      <div className="max-w-7xl mx-auto">
+      {/* Bandeau d'en-tete : photo pleine largeur + voile noir, comme Avis. */}
+      <PageHero
+        image={HERO_IMAGES.fleet}
+        eyebrow={lang === 'fr' ? 'Catalogue complet' : 'الكتالوج الكامل'}
+        title={
+          lang === 'fr'
+            ? <>La <span className="text-aurora">flotte</span></>
+            : <span className="text-aurora">الأسطول</span>
+        }
+        description={
+          lang === 'fr'
+            ? "Tous les véhicules de toutes nos agences partenaires. Filtrez par agence pour ne voir qu'une seule enseigne."
+            : 'جميع سيارات كل وكالاتنا الشريكة.'
+        }
+      />
 
-        {/* ── En-tête ── */}
-        <motion.div
-          initial={{ opacity: 0, y: -18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-10"
-        >
-          <p
-            className="text-[11px] font-bold uppercase tracking-[0.22em] mb-3"
-            style={{ color: 'var(--color-iris)', fontFamily: 'var(--font-display)' }}
-          >
-            {lang === 'fr' ? 'Catalogue complet' : 'الكتالوج الكامل'}
-          </p>
-          <h1
-            className="font-black text-4xl sm:text-6xl leading-tight"
-            style={{ color: 'var(--color-title)', fontFamily: 'var(--font-display)' }}
-          >
-            {lang === 'fr' ? 'La ' : ''}<span className="text-aurora">{lang === 'fr' ? 'flotte' : 'الأسطول'}</span>
-          </h1>
-          <p className="text-sm sm:text-base mt-4 max-w-2xl mx-auto" style={{ color: 'var(--color-muted)' }}>
-            {lang === 'fr'
-              ? "Tous les véhicules de toutes nos agences partenaires. Filtrez par agence pour ne voir qu'une seule enseigne."
-              : 'جميع سيارات كل وكالاتنا الشريكة. صفِّ حسب الوكالة لعرض علامة واحدة فقط.'}
-          </p>
-        </motion.div>
-
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
         {/* ── Filtre d'agence ── */}
         <motion.div
           initial={{ opacity: 0, y: 14 }}

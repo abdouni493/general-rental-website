@@ -73,31 +73,28 @@ export const HomePage: React.FC = () => {
   return (
     <div>
       {/* ══════════════════════════ HERO ══════════════════════════ */}
-      <section ref={heroRef} className="relative overflow-hidden min-h-[92vh] flex items-center">
-        <HeroBackdrop orbY={reduce ? undefined : orbY} />
+      {/* Composition reprise d'avis.com : photo pleine largeur, voile noir
+          dégradé vers la droite, titre en capitales calé à gauche. */}
+      <section ref={heroRef} className="on-photo relative overflow-hidden min-h-[88vh] flex items-end">
+        <HeroBackdrop orbY={reduce ? undefined : orbY} reduce={!!reduce} />
 
         <motion.div
           style={reduce ? {} : { y: heroY, opacity: heroOpacity }}
-          className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20"
+          className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-36 pb-16"
         >
           {/* Accroche */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="text-center max-w-4xl mx-auto mb-10"
+            transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+            className="max-w-3xl mb-9"
           >
             <motion.span
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-[0.16em] mb-7"
-              style={{
-                color: 'var(--color-aqua)',
-                background: 'var(--color-aqua-soft)',
-                border: '1px solid var(--color-aqua-soft)',
-                fontFamily: 'var(--font-display)',
-              }}
+              initial={{ opacity: 0, x: -16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1, duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] mb-6 text-white"
+              style={{ background: 'var(--color-iris)', fontFamily: 'var(--font-display)' }}
             >
               <Sparkles size={13} />
               {lang === 'fr'
@@ -105,10 +102,7 @@ export const HomePage: React.FC = () => {
                 : `${agencies.length} وكالات · ${cars.length} سيارة`}
             </motion.span>
 
-            <h1
-              className="font-black text-4xl sm:text-6xl lg:text-7xl leading-[1.04] tracking-tight mb-6"
-              style={{ color: 'var(--color-title)', fontFamily: 'var(--font-display)' }}
-            >
+            <h1 className="avis-headline text-5xl sm:text-6xl lg:text-7xl mb-5 text-white">
               {lang === 'fr' ? (
                 <>
                   Toutes les agences.<br />
@@ -122,7 +116,7 @@ export const HomePage: React.FC = () => {
               )}
             </h1>
 
-            <p className="text-base sm:text-lg max-w-2xl mx-auto leading-relaxed" style={{ color: 'var(--color-muted)' }}>
+            <p className="text-base sm:text-lg max-w-2xl leading-relaxed" style={{ color: 'rgba(255,255,255,0.86)' }}>
               {lang === 'fr'
                 ? "Comparez les flottes de nos agences partenaires en un seul endroit. Votre réservation part directement à l'agence qui possède le véhicule choisi."
                 : 'قارن أساطيل وكالاتنا الشريكة في مكان واحد. يصل حجزك مباشرة إلى الوكالة المالكة للسيارة المختارة.'}
@@ -137,28 +131,28 @@ export const HomePage: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45, duration: 0.6 }}
-              className="mt-8 flex flex-col items-center gap-3"
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="mt-7 flex flex-col items-start gap-3"
             >
               <p
-                className="text-[11px] font-bold uppercase tracking-[0.18em]"
-                style={{ color: 'var(--color-faint)', fontFamily: 'var(--font-display)' }}
+                className="text-[11px] font-bold uppercase tracking-[0.16em]"
+                style={{ color: 'rgba(255,255,255,0.7)', fontFamily: 'var(--font-display)' }}
               >
                 {lang === 'fr' ? 'Ou parcourez une agence en particulier' : 'أو تصفح وكالة معينة'}
               </p>
-              <AgencyFilter variant="compact" className="flex justify-center" />
+              <AgencyFilter variant="compact" />
             </motion.div>
           )}
         </motion.div>
 
         {/* Indicateur de défilement */}
         <motion.div
-          animate={{ y: [0, 9, 0] }}
+          animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 pointer-events-none"
-          style={{ color: 'var(--color-muted)' }}
+          className="absolute bottom-5 right-6 hidden sm:flex flex-col items-center gap-1.5 pointer-events-none"
+          style={{ color: 'rgba(255,255,255,0.75)' }}
         >
-          <span className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ fontFamily: 'var(--font-display)' }}>
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ fontFamily: 'var(--font-display)' }}>
             {lang === 'fr' ? 'Défiler' : 'مرر'}
           </span>
           <ChevronDown size={16} />
@@ -223,10 +217,10 @@ export const HomePage: React.FC = () => {
           {!isLoading && filteredCars.length > featured.length && (
             <div className="flex justify-center mt-12">
               <motion.button
-                whileHover={{ scale: 1.03, y: -2 }}
-                whileTap={{ scale: 0.97 }}
+                whileHover={{ y: -2 }}
+                whileTap={{ y: 0 }}
                 onClick={() => navigate('/offres')}
-                className="btn-ghost h-13 px-8 py-4 text-sm"
+                className="btn-ghost avis-arrow h-13 px-8 py-4 text-sm uppercase tracking-[0.05em]"
               >
                 {lang === 'fr'
                   ? `Voir les ${filteredCars.length} véhicules`
@@ -264,40 +258,44 @@ export const HomePage: React.FC = () => {
 
 // ─── Décor du hero ───────────────────────────────────────────────────────────
 
-const HeroBackdrop: React.FC<{ orbY?: any }> = ({ orbY }) => (
-  <>
-    <div className="absolute inset-0 bg-grid opacity-[0.35] pointer-events-none" />
+/**
+ * Photo pleine largeur + voile noir dégradé : la recette exacte des héros
+ * d'avis.com. Le lent zoom (« Ken Burns ») remplace les halos de l'ancien
+ * thème, et la parallaxe au défilement est conservée.
+ */
+const HERO_IMAGE =
+  'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2400&q=80';
 
+const HeroBackdrop: React.FC<{ orbY?: any; reduce: boolean }> = ({ orbY, reduce }) => (
+  <>
     <motion.div
       style={orbY ? { y: orbY } : {}}
       className="absolute inset-0 pointer-events-none overflow-hidden"
       aria-hidden="true"
     >
-      <motion.div
-        animate={{ scale: [1, 1.18, 1], opacity: [0.5, 0.72, 0.5] }}
-        transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute -top-40 left-[6%] w-[36rem] h-[36rem] rounded-full"
-        style={{ background: 'radial-gradient(circle, var(--color-iris-glow), transparent 66%)', filter: 'blur(38px)' }}
+      <img
+        src={HERO_IMAGE}
+        alt=""
+        className={`absolute inset-0 w-full h-full object-cover ${reduce ? '' : 'avis-kenburns'}`}
+        style={{ objectPosition: 'center 55%' }}
       />
-      <motion.div
-        animate={{ scale: [1.15, 1, 1.15], opacity: [0.38, 0.6, 0.38] }}
-        transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-[18%] right-[2%] w-[30rem] h-[30rem] rounded-full"
-        style={{ background: 'radial-gradient(circle, var(--color-aqua-glow), transparent 66%)', filter: 'blur(44px)' }}
+      {/* Voile de lisibilité : opaque à gauche, transparent à droite. */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            'linear-gradient(to right, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.72) 38%, rgba(0,0,0,0.25) 75%, rgba(0,0,0,0.1) 100%)',
+        }}
       />
-      <motion.div
-        animate={{ scale: [1, 1.22, 1], opacity: [0.24, 0.42, 0.24] }}
-        transition={{ duration: 17, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute bottom-[-12%] left-[32%] w-[28rem] h-[28rem] rounded-full"
-        style={{ background: 'radial-gradient(circle, rgba(244,113,181,0.3), transparent 66%)', filter: 'blur(46px)' }}
+      {/* Fondu vers la section suivante */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-32"
+        style={{ background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.85))' }}
       />
     </motion.div>
 
-    {/* Fondu vers la section suivante */}
-    <div
-      className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none"
-      style={{ background: 'linear-gradient(to bottom, transparent, var(--color-ink))' }}
-    />
+    {/* Liseré rouge de marque, sur toute la largeur, sous le hero */}
+    <div className="absolute bottom-0 left-0 right-0 h-1 z-10" style={{ background: 'var(--color-iris)' }} />
   </>
 );
 
@@ -323,20 +321,19 @@ const SearchPanel: React.FC = () => {
       initial={{ opacity: 0, y: 34 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.75, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-      className="max-w-5xl mx-auto rounded-3xl p-5 sm:p-7"
+      className="max-w-5xl p-5 sm:p-7"
       style={{
-        background: 'color-mix(in srgb, var(--color-panel) 72%, transparent)',
-        border: '1px solid var(--color-line)',
-        backdropFilter: 'blur(22px) saturate(150%)',
-        WebkitBackdropFilter: 'blur(22px) saturate(150%)',
+        background: '#FFFFFF',
+        borderTop: '4px solid var(--color-iris)',
         boxShadow: 'var(--shadow-lift)',
+        borderRadius: '4px',
       }}
     >
       <p
-        className="text-[11px] font-bold uppercase tracking-[0.18em] mb-5 flex items-center gap-2"
-        style={{ color: 'var(--color-iris)', fontFamily: 'var(--font-display)' }}
+        className="text-[13px] font-extrabold uppercase tracking-[0.06em] mb-5 flex items-center gap-2"
+        style={{ color: '#000000', fontFamily: 'var(--font-display)' }}
       >
-        <Search size={13} />
+        <Search size={14} style={{ color: 'var(--color-iris)' }} />
         {lang === 'fr' ? 'Trouvez un véhicule disponible' : 'ابحث عن سيارة متاحة'}
       </p>
 
@@ -395,18 +392,18 @@ const SearchPanel: React.FC = () => {
         </div>
 
         <motion.button
-          whileHover={isValid ? { scale: 1.03, y: -2 } : {}}
-          whileTap={isValid ? { scale: 0.97 } : {}}
+          whileHover={isValid ? { y: -1 } : {}}
+          whileTap={isValid ? { y: 0 } : {}}
           onClick={submit}
           disabled={!isValid}
-          className="btn-aurora h-[46px] px-7 text-sm w-full lg:w-auto"
+          className="btn-aurora h-[46px] px-8 text-base w-full lg:w-auto"
         >
           {lang === 'fr' ? 'Rechercher' : 'بحث'} <ArrowRight size={16} />
         </motion.button>
       </div>
 
-      <p className="text-[11px] mt-4 flex items-center gap-1.5" style={{ color: 'var(--color-faint)' }}>
-        <ShieldCheck size={12} />
+      <p className="text-[11px] mt-4 flex items-center gap-1.5" style={{ color: '#736D6D' }}>
+        <ShieldCheck size={12} style={{ color: 'var(--color-mint)' }} />
         {lang === 'fr'
           ? 'Disponibilité vérifiée en direct auprès de chaque agence, au moment de la recherche.'
           : 'يتم التحقق من التوفر مباشرة لدى كل وكالة.'}
@@ -424,9 +421,9 @@ const StatsBand: React.FC = () => {
 
   const items = [
     { icon: Building2, value: `${agencies.length}`, label: { fr: 'Agences connectées', ar: 'وكالات متصلة' }, accent: 'var(--color-iris)' },
-    { icon: CarIcon, value: `${cars.length}`, label: { fr: 'Véhicules en ligne', ar: 'سيارات متاحة' }, accent: 'var(--color-aqua)' },
-    { icon: MapPin, value: `${pickupPoints.length}`, label: { fr: 'Points de retrait', ar: 'نقاط الاستلام' }, accent: 'var(--color-mint)' },
-    { icon: Star, value: cheapest ? money(cheapest, lang) : '—', label: { fr: 'À partir de / jour', ar: 'ابتداء من / يوم' }, accent: 'var(--color-magenta)' },
+    { icon: CarIcon, value: `${cars.length}`, label: { fr: 'Véhicules en ligne', ar: 'سيارات متاحة' }, accent: 'var(--color-iris)' },
+    { icon: MapPin, value: `${pickupPoints.length}`, label: { fr: 'Points de retrait', ar: 'نقاط الاستلام' }, accent: 'var(--color-aqua)' },
+    { icon: Star, value: cheapest ? money(cheapest, lang) : '—', label: { fr: 'À partir de / jour', ar: 'ابتداء من / يوم' }, accent: 'var(--color-iris)' },
   ];
 
   return (
@@ -444,23 +441,17 @@ const StatsBand: React.FC = () => {
             transition={{ duration: 0.55, delay: i * 0.09 }}
             className="text-center sm:text-left flex flex-col sm:flex-row items-center gap-3"
           >
-            <div
-              className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
-              style={{
-                background: `color-mix(in srgb, ${item.accent} 12%, transparent)`,
-                border: `1px solid color-mix(in srgb, ${item.accent} 28%, transparent)`,
-              }}
-            >
-              <item.icon size={20} style={{ color: item.accent }} />
+            <div className="w-12 h-12 flex items-center justify-center shrink-0" style={{ background: item.accent }}>
+              <item.icon size={20} className="text-white" />
             </div>
             <div className="min-w-0">
-              <p
-                className="font-black text-2xl sm:text-3xl leading-none"
-                style={{ color: 'var(--color-title)', fontFamily: 'var(--font-display)' }}
-              >
+              <p className="avis-headline text-3xl sm:text-4xl" style={{ color: 'var(--color-title)' }}>
                 {item.value}
               </p>
-              <p className="text-[11px] font-bold uppercase tracking-wider mt-1.5" style={{ color: 'var(--color-muted)' }}>
+              <p
+                className="text-[11px] font-bold uppercase tracking-[0.1em] mt-1.5"
+                style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-display)' }}
+              >
                 {item.label[lang]}
               </p>
             </div>
@@ -493,7 +484,7 @@ const HowItWorks: React.FC = () => {
         fr: "Une fois le véhicule choisi, seuls les points de retrait de SON agence vous sont proposés — celle qui vous remettra les clés.",
         ar: 'بعد اختيار السيارة، تُقترح فقط نقاط استلام وكالتها.',
       },
-      accent: 'var(--color-aqua)',
+      accent: 'var(--color-iris)',
     },
     {
       icon: Zap,
@@ -502,7 +493,7 @@ const HowItWorks: React.FC = () => {
         fr: "Votre réservation arrive instantanément dans le logiciel de l'agence propriétaire, qui vous rappelle pour la confirmer.",
         ar: 'يصل حجزك فورا إلى برنامج الوكالة المالكة.',
       },
-      accent: 'var(--color-magenta)',
+      accent: 'var(--color-iris)',
     },
   ];
 
@@ -521,32 +512,27 @@ const HowItWorks: React.FC = () => {
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-70px' }}
-              transition={{ duration: 0.6, delay: i * 0.14, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -6 }}
-              className="ring-aurora relative rounded-2xl p-7 overflow-hidden"
-              style={{ background: 'var(--color-panel)', border: '1px solid var(--color-line)' }}
+              transition={{ duration: 0.5, delay: i * 0.12, ease: [0.4, 0, 0.2, 1] }}
+              whileHover={{ y: -4 }}
+              className="relative p-7 overflow-hidden"
+              style={{
+                background: 'var(--color-panel)',
+                border: '1px solid var(--color-line)',
+                borderLeft: '4px solid var(--color-iris)',
+              }}
             >
               <span
-                className="absolute top-5 right-6 font-black text-6xl leading-none pointer-events-none select-none"
-                style={{ color: step.accent, opacity: 0.09, fontFamily: 'var(--font-display)' }}
+                className="avis-headline absolute top-4 right-6 text-7xl pointer-events-none select-none"
+                style={{ color: step.accent, opacity: 0.08 }}
               >
                 {i + 1}
               </span>
 
-              <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
-                style={{
-                  background: `color-mix(in srgb, ${step.accent} 13%, transparent)`,
-                  border: `1px solid color-mix(in srgb, ${step.accent} 30%, transparent)`,
-                }}
-              >
-                <step.icon size={21} style={{ color: step.accent }} />
+              <div className="w-12 h-12 flex items-center justify-center mb-5" style={{ background: step.accent }}>
+                <step.icon size={21} className="text-white" />
               </div>
 
-              <h3
-                className="font-bold text-lg mb-2.5"
-                style={{ color: 'var(--color-title)', fontFamily: 'var(--font-display)' }}
-              >
+              <h3 className="avis-headline text-xl mb-2.5" style={{ color: 'var(--color-title)' }}>
                 {step.title[lang]}
               </h3>
               <p className="text-sm leading-relaxed" style={{ color: 'var(--color-muted)' }}>
@@ -589,15 +575,20 @@ const AgenciesBand: React.FC = () => {
             return (
               <div
                 key={`${agency.id}-${i}`}
-                className="flex items-center gap-3 px-6 py-4 rounded-2xl shrink-0"
-                style={{ background: 'var(--color-panel)', border: '1px solid var(--color-line)', minWidth: '16rem' }}
+                className="flex items-center gap-3 px-6 py-4 shrink-0"
+                style={{
+                  background: 'var(--color-panel)',
+                  border: '1px solid var(--color-line)',
+                  borderBottom: '3px solid var(--color-iris)',
+                  minWidth: '16rem',
+                }}
               >
                 {agency.logoUrl ? (
-                  <img src={agency.logoUrl} alt="" className="w-11 h-11 rounded-xl object-cover shrink-0" referrerPolicy="no-referrer" />
+                  <img src={agency.logoUrl} alt="" className="w-11 h-11 object-cover shrink-0" referrerPolicy="no-referrer" />
                 ) : (
                   <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center font-black text-white shrink-0"
-                    style={{ background: accent, fontFamily: 'var(--font-display)' }}
+                    className="avis-headline w-11 h-11 flex items-center justify-center text-lg text-white shrink-0"
+                    style={{ background: accent }}
                   >
                     {agency.name.charAt(0).toUpperCase()}
                   </div>
@@ -630,35 +621,27 @@ const FinalCta: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden" style={{ background: 'var(--color-ink)' }}>
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 50%, var(--color-iris-soft), transparent 70%)' }}
-      />
-
+    <section className="avis-band relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.7 }}
+        transition={{ duration: 0.55, ease: [0.4, 0, 0.2, 1] }}
         className="relative max-w-3xl mx-auto text-center"
       >
-        <h2
-          className="font-black text-3xl sm:text-5xl mb-5 leading-tight"
-          style={{ color: 'var(--color-title)', fontFamily: 'var(--font-display)' }}
-        >
+        <h2 className="avis-headline text-4xl sm:text-5xl lg:text-6xl mb-5 text-white">
           {lang === 'fr' ? 'Prêt à prendre la route ?' : 'مستعد للانطلاق؟'}
         </h2>
-        <p className="text-base mb-9" style={{ color: 'var(--color-muted)' }}>
+        <p className="text-base mb-9" style={{ color: 'rgba(255,255,255,0.82)' }}>
           {lang === 'fr'
             ? 'Choisissez votre véhicule, indiquez vos dates, et laissez-nous transmettre le reste.'
             : 'اختر سيارتك، حدد تواريخك، ودعنا نتكفل بالباقي.'}
         </p>
         <motion.button
-          whileHover={{ scale: 1.04, y: -3 }}
-          whileTap={{ scale: 0.96 }}
+          whileHover={{ y: -2 }}
+          whileTap={{ y: 0 }}
           onClick={() => navigate('/offres')}
-          className="btn-aurora h-14 px-10 text-sm"
+          className="btn-ghost btn-ghost-invert h-14 px-10 text-sm uppercase tracking-[0.06em]"
         >
           <CarIcon size={18} /> {lang === 'fr' ? 'Parcourir les véhicules' : 'تصفح السيارات'}
         </motion.button>
@@ -673,28 +656,30 @@ export const SectionHeading: React.FC<{
   eyebrow: string;
   title: string;
   description?: string;
-}> = ({ eyebrow, title, description }) => (
+  /** Aligné à gauche derrière un liseré rouge — la mise en page d'Avis. */
+  align?: 'left' | 'center';
+}> = ({ eyebrow, title, description, align = 'left' }) => (
   <motion.div
-    initial={{ opacity: 0, y: 22 }}
+    initial={{ opacity: 0, y: 18 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: '-60px' }}
-    transition={{ duration: 0.6 }}
-    className="text-center mb-12"
+    transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+    className={align === 'center' ? 'text-center mb-12' : 'avis-bar mb-12'}
   >
     <p
-      className="text-[11px] font-bold uppercase tracking-[0.22em] mb-3"
+      className="text-[11px] font-extrabold uppercase tracking-[0.18em] mb-2.5"
       style={{ color: 'var(--color-iris)', fontFamily: 'var(--font-display)' }}
     >
       {eyebrow}
     </p>
-    <h2
-      className="font-black text-3xl sm:text-4xl lg:text-5xl leading-tight"
-      style={{ color: 'var(--color-title)', fontFamily: 'var(--font-display)' }}
-    >
+    <h2 className="avis-headline text-3xl sm:text-4xl lg:text-5xl" style={{ color: 'var(--color-title)' }}>
       {title}
     </h2>
     {description && (
-      <p className="text-sm sm:text-base mt-4 max-w-2xl mx-auto leading-relaxed" style={{ color: 'var(--color-muted)' }}>
+      <p
+        className={`text-sm sm:text-base mt-4 leading-relaxed ${align === 'center' ? 'max-w-2xl mx-auto' : 'max-w-2xl'}`}
+        style={{ color: 'var(--color-muted)' }}
+      >
         {description}
       </p>
     )}

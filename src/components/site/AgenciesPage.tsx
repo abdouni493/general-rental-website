@@ -6,9 +6,9 @@ import {
   Facebook, Instagram, MessageCircle,
 } from 'lucide-react';
 
+import { PageHero, HERO_IMAGES } from './PageHero';
 import { useApp } from '../../context/AppContext';
 import { FleetService } from '../../services/FleetService';
-import { SectionHeading } from './HomePage';
 import { EmptyState, PageLoader } from '../ui/Primitives';
 import { agencyColor, agencyTint, money } from '../../utils/format';
 import type { AgencyContact } from '../../types';
@@ -45,20 +45,25 @@ export const AgenciesPage: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen pt-28 pb-24 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen pb-24"
       style={{ background: 'var(--color-ink)' }}
     >
-      <div className="max-w-7xl mx-auto">
-        <SectionHeading
-          eyebrow={lang === 'fr' ? 'Notre réseau' : 'شبكتنا'}
-          title={lang === 'fr' ? 'Les agences partenaires' : 'الوكالات الشريكة'}
-          description={
-            lang === 'fr'
-              ? "Chaque véhicule du portail appartient à l'une de ces agences. C'est elle qui vous remet les clés, établit le contrat et encaisse la location."
-              : 'كل سيارة في البوابة تعود لإحدى هذه الوكالات.'
-          }
-        />
+      <PageHero
+        image={HERO_IMAGES.agencies}
+        eyebrow={lang === 'fr' ? 'Notre réseau' : 'شبكتنا'}
+        title={
+          lang === 'fr'
+            ? <>Les agences <span className="text-aurora">partenaires</span></>
+            : <span className="text-aurora">الوكالات الشريكة</span>
+        }
+        description={
+          lang === 'fr'
+            ? "Chaque véhicule du portail appartient à l'une de ces agences. C'est elle qui vous remet les clés, établit le contrat et encaisse la location."
+            : 'كل سيارة في البوابة تعود لإحدى هذه الوكالات.'
+        }
+      />
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
         {agencies.length === 0 ? (
           <EmptyState
             icon={Building2}

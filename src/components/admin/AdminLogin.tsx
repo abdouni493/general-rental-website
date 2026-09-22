@@ -178,7 +178,7 @@ export const AdminLogin: React.FC = () => {
               >
                 <div
                   className="flex items-start gap-2.5 rounded-xl px-4 py-3"
-                  style={{ background: 'rgba(251,113,133,0.1)', border: '1px solid rgba(251,113,133,0.3)' }}
+                  style={{ background: 'rgba(194,14,26,0.1)', border: '1px solid rgba(194,14,26,0.3)' }}
                   role="alert"
                 >
                   <AlertCircle size={16} style={{ color: 'var(--color-coral)' }} className="shrink-0 mt-0.5" />
@@ -196,7 +196,7 @@ export const AdminLogin: React.FC = () => {
               >
                 <div
                   className="flex items-start gap-2.5 rounded-xl px-4 py-3"
-                  style={{ background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.3)' }}
+                  style={{ background: 'rgba(70,130,84,0.1)', border: '1px solid rgba(70,130,84,0.3)' }}
                 >
                   <Check size={16} style={{ color: 'var(--color-mint)' }} className="shrink-0 mt-0.5" />
                   <p className="text-xs" style={{ color: 'var(--color-title)' }}>{notice}</p>
@@ -312,7 +312,7 @@ export const AdminLogin: React.FC = () => {
           {adminExists === 'setup' && (
             <div
               className="mt-6 pt-5 rounded-xl px-4 py-3.5 flex items-start gap-2.5"
-              style={{ background: 'rgba(251,191,36,0.09)', border: '1px solid rgba(251,191,36,0.3)' }}
+              style={{ background: 'rgba(176,123,18,0.09)', border: '1px solid rgba(176,123,18,0.3)' }}
             >
               <AlertCircle size={16} style={{ color: 'var(--color-amber)' }} className="shrink-0 mt-0.5" />
               <div className="min-w-0">

@@ -36,12 +36,12 @@ const PLACEHOLDER_CAR_IMAGE =
   encodeURIComponent(
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-         <stop offset="0" stop-color="#1F2450"/><stop offset="1" stop-color="#10132A"/>
+         <stop offset="0" stop-color="#F4F4F4"/><stop offset="1" stop-color="#DEDEDE"/>
        </linearGradient></defs>
        <rect width="400" height="300" fill="url(#g)"/>
-       <path d="M80 180h240l-24-46a24 24 0 0 0-21-13H125a24 24 0 0 0-21 13z" fill="#7C5CFF" opacity="0.35"/>
-       <circle cx="130" cy="192" r="18" fill="#22D3EE" opacity="0.5"/>
-       <circle cx="270" cy="192" r="18" fill="#22D3EE" opacity="0.5"/>
+       <path d="M80 180h240l-24-46a24 24 0 0 0-21-13H125a24 24 0 0 0-21 13z" fill="#D4002A" opacity="0.55"/>
+       <circle cx="130" cy="192" r="18" fill="#000000" opacity="0.35"/>
+       <circle cx="270" cy="192" r="18" fill="#000000" opacity="0.35"/>
      </svg>`,
   );
 

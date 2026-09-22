@@ -60,8 +60,8 @@ export const ErrorBanner: React.FC<{ message: string; onRetry?: () => void }> = 
     animate={{ opacity: 1, y: 0 }}
     className="flex items-start gap-3 rounded-2xl px-4 py-3.5"
     style={{
-      background: 'rgba(251, 113, 133, 0.10)',
-      border: '1px solid rgba(251, 113, 133, 0.30)',
+      background: 'rgba(194, 14, 26, 0.10)',
+      border: '1px solid rgba(194, 14, 26, 0.30)',
     }}
     role="alert"
   >
@@ -195,7 +195,7 @@ export const Modal: React.FC<{
         exit={{ opacity: 0 }}
         onClick={onClose}
         className="absolute inset-0"
-        style={{ background: 'rgba(5, 6, 15, 0.72)', backdropFilter: 'blur(8px)' }}
+        style={{ background: 'rgba(0, 0, 0, 0.72)', backdropFilter: 'blur(8px)' }}
       />
       <motion.div
         role="dialog"

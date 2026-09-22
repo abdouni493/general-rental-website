@@ -28,8 +28,8 @@ function ScrollToTop() {
   return null;
 }
 
-/** L'espace admin est clair par défaut, la vitrine sombre : on repose le
- *  thème à chaque bascule entre les deux mondes. */
+/** Identité Avis : clair par défaut des deux côtés. On repose tout de même le
+ *  thème à chaque bascule, chaque monde gardant sa préférence enregistrée. */
 function ThemeScope() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -38,9 +38,9 @@ function ThemeScope() {
     let theme: string;
     try {
       const saved = localStorage.getItem(key);
-      theme = saved === 'dark' || saved === 'light' ? saved : isAdmin ? 'light' : 'dark';
+      theme = saved === 'dark' || saved === 'light' ? saved : 'light';
     } catch {
-      theme = isAdmin ? 'light' : 'dark';
+      theme = 'light';
     }
     document.documentElement.setAttribute('data-theme', theme);
     document.documentElement.style.colorScheme = theme;

@@ -66,7 +66,7 @@ const readStored = <T extends string>(key: string, allowed: T[], fallback: T): T
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [lang, setLangState] = useState<Language>(() => readStored(LANG_KEY, ['fr', 'ar'], 'fr'));
-  const [theme, setTheme] = useState<Theme>(() => readStored(THEME_KEY, ['dark', 'light'], 'dark'));
+  const [theme, setTheme] = useState<Theme>(() => readStored(THEME_KEY, ['dark', 'light'], 'light'));
 
   const [agencies, setAgencies] = useState<PublicAgency[]>([]);
   const [cars, setCars] = useState<Car[]>([]);
