@@ -1,0 +1,420 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   DRIVEHUB — SYSTÈME DE THÈME « AURORA »
+   ============================================================================
+   Identité volontairement DIFFÉRENTE des trois agences intégrées :
+     • SZ Cars  → noir obsidienne + or
+     • iCar     → crème + or métallique
+     • MHD Auto → ardoise claire + rouge crimson + bleu électrique
+     • DriveHub → nuit indigo + VIOLET / AQUA / MAGENTA (aurore boréale)
+
+   Fonctionnement
+   --------------
+   Tailwind v4 compile `bg-ink` en `background-color: var(--color-ink)`.
+   Les utilitaires pointent donc sur la variable, jamais sur une valeur figée :
+   redéfinir la variable sous `[data-theme="light"]` bascule TOUTE l'interface.
+
+   `data-theme` est posé sur <html> par le script inline de index.html puis
+   maintenu par src/context/ThemeContext.tsx. Le sombre est le défaut du site
+   public, le clair celui de l'espace d'administration.
+   ============================================================================ */
+
+@theme {
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", "Manrope", sans-serif;
+
+  /* ── Aurore : les trois teintes de marque ───────────────────────────────── */
+  --color-iris:        #7C5CFF;  /* violet principal — CTA, liens actifs      */
+  --color-iris-light:  #A18CFF;
+  --color-iris-dark:   #5B3BE0;
+  --color-iris-deep:   #3D22B0;
+
+  --color-aqua:        #22D3EE;  /* cyan — accent secondaire, données         */
+  --color-aqua-light:  #67E8F9;
+  --color-aqua-dark:   #0E9BB8;
+
+  --color-magenta:     #F471B5;  /* magenta — promotions, badges              */
+  --color-magenta-dark:#DB2777;
+
+  --color-mint:        #34D399;  /* succès / disponibilité                    */
+  --color-amber:       #FBBF24;  /* attention                                 */
+  --color-coral:       #FB7185;  /* erreur / suppression                      */
+
+  /* Lueurs réutilisées dans les ombres et les halos */
+  --color-iris-glow:   rgba(124, 92, 255, 0.35);
+  --color-iris-soft:   rgba(124, 92, 255, 0.10);
+  --color-aqua-glow:   rgba(34, 211, 238, 0.28);
+  --color-aqua-soft:   rgba(34, 211, 238, 0.09);
+  --color-magenta-soft:rgba(244, 113, 181, 0.10);
+
+  /* ── Socle du thème (valeurs du mode SOMBRE, défaut du site public) ─────── */
+  --color-ink:         #05060F;  /* fond de page — nuit indigo                */
+  --color-ink-alt:     #0A0C1B;  /* bandes alternées                          */
+  --color-panel:       #10132A;  /* cartes                                    */
+  --color-panel-2:     #161A38;  /* cartes survolées / champs                 */
+  --color-panel-3:     #1F2450;  /* creux profonds                            */
+  --color-line:        rgba(124, 92, 255, 0.16);
+  --color-line-soft:   rgba(255, 255, 255, 0.07);
+
+  --color-title:       #F5F6FF;  /* titres                                    */
+  --color-body:        #C7CBEA;  /* texte courant                             */
+  --color-muted:       #8A90BC;  /* texte atténué                             */
+  --color-faint:       #5C628C;  /* texte discret                             */
+
+  /* ── Rayons & ombres ────────────────────────────────────────────────────── */
+  --shadow-panel: 0 1px 2px rgba(0, 0, 0, 0.45), 0 12px 40px rgba(0, 0, 0, 0.38);
+  --shadow-lift:  0 18px 50px rgba(0, 0, 0, 0.5);
+  --shadow-iris:  0 10px 34px rgba(124, 92, 255, 0.32);
+  --shadow-aqua:  0 10px 34px rgba(34, 211, 238, 0.26);
+
+  /* ── Courbes d'animation ────────────────────────────────────────────────── */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ============================================================================
+   MODE CLAIR — mêmes variables, valeurs claires.
+   ============================================================================ */
+:root[data-theme="light"] {
+  --color-ink:       #F5F6FC;
+  --color-ink-alt:   #FFFFFF;
+  --color-panel:     #FFFFFF;
+  --color-panel-2:   #F2F3FB;
+  --color-panel-3:   #E6E8F6;
+  --color-line:      rgba(91, 59, 224, 0.14);
+  --color-line-soft: rgba(15, 18, 45, 0.07);
+
+  --color-title:     #0D1030;
+  --color-body:      #363C66;
+  --color-muted:     #656B94;
+  --color-faint:     #9297BB;
+
+  /* Le violet doit rester lisible sur fond clair : on l'assombrit d'un cran. */
+  --color-iris:       #5B3BE0;
+  --color-iris-light: #7C5CFF;
+  --color-iris-dark:  #3D22B0;
+  --color-aqua:       #0E9BB8;
+  --color-aqua-light: #22D3EE;
+  --color-magenta:    #DB2777;
+
+  --color-iris-glow: rgba(91, 59, 224, 0.22);
+  --color-iris-soft: rgba(91, 59, 224, 0.07);
+  --color-aqua-glow: rgba(14, 155, 184, 0.18);
+  --color-aqua-soft: rgba(14, 155, 184, 0.07);
+
+  --shadow-panel: 0 1px 2px rgba(13, 16, 48, 0.05), 0 10px 32px rgba(13, 16, 48, 0.07);
+  --shadow-lift:  0 18px 46px rgba(13, 16, 48, 0.12);
+  --shadow-iris:  0 10px 30px rgba(91, 59, 224, 0.22);
+  --shadow-aqua:  0 10px 30px rgba(14, 155, 184, 0.2);
+}
+
+/* ============================================================================
+   BASE
+   ============================================================================ */
+* {
+  border-color: var(--color-line-soft);
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Le scroll-snap du carrousel ne doit pas masquer le titre sous la navbar. */
+  scroll-padding-top: 6rem;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ink);
+  color: var(--color-body);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.4s var(--ease-out-soft), color 0.4s var(--ease-out-soft);
+}
+
+::selection {
+  background: var(--color-iris);
+  color: #fff;
+}
+
+/* Barre de défilement assortie au thème */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--color-ink-alt); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--color-iris), var(--color-aqua));
+  border-radius: 999px;
+  border: 2px solid var(--color-ink-alt);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--color-iris); }
+
+/* Champs de formulaire : un seul rendu pour toute l'application */
+input[type="date"],
+input[type="time"] {
+  color-scheme: inherit;
+}
+
+input, select, textarea {
+  font-family: inherit;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-iris);
+  outline-offset: 2px;
+}
+
+/* ============================================================================
+   COMPOSANTS UTILITAIRES
+   ============================================================================ */
+
+/* ── Surface vitrée : la carte de base de tout le site ──────────────────── */
+.glass {
+  background: color-mix(in srgb, var(--color-panel) 88%, transparent);
+  border: 1px solid var(--color-line);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+.glass-strong {
+  background: var(--color-panel);
+  border: 1px solid var(--color-line);
+  box-shadow: var(--shadow-panel);
+}
+
+/* ── Bouton principal : dégradé aurore + lueur ─────────────────────────── */
+.btn-aurora {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.875rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(120deg, var(--color-iris-dark), var(--color-iris) 45%, var(--color-aqua));
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  box-shadow: var(--shadow-iris);
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: background-position 0.6s var(--ease-out-soft),
+              transform 0.25s var(--ease-spring),
+              box-shadow 0.3s var(--ease-out-soft);
+}
+.btn-aurora:hover:not(:disabled) {
+  background-position: 100% 50%;
+  transform: translateY(-2px);
+  box-shadow: 0 16px 42px var(--color-iris-glow);
+}
+.btn-aurora:active:not(:disabled) { transform: translateY(0) scale(0.98); }
+.btn-aurora:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+
+/* Reflet qui balaie le bouton au survol */
+.btn-aurora::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.28) 50%, transparent 65%);
+  transform: translateX(-120%);
+  transition: transform 0.75s var(--ease-out-soft);
+}
+.btn-aurora:hover:not(:disabled)::after { transform: translateX(120%); }
+
+/* ── Bouton secondaire : contour seul ──────────────────────────────────── */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.875rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-title);
+  background: color-mix(in srgb, var(--color-panel-2) 70%, transparent);
+  border: 1px solid var(--color-line);
+  cursor: pointer;
+  transition: all 0.25s var(--ease-out-soft);
+}
+.btn-ghost:hover:not(:disabled) {
+  border-color: var(--color-iris);
+  color: var(--color-iris);
+  background: var(--color-iris-soft);
+  transform: translateY(-1px);
+}
+.btn-ghost:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Champ de saisie standard ──────────────────────────────────────────── */
+.field {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.875rem;
+  background: var(--color-panel-2);
+  border: 1px solid var(--color-line);
+  color: var(--color-title);
+  font-size: 0.875rem;
+  font-weight: 500;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+.field::placeholder { color: var(--color-faint); font-weight: 400; }
+.field:hover { border-color: color-mix(in srgb, var(--color-iris) 45%, transparent); }
+.field:focus {
+  border-color: var(--color-iris);
+  box-shadow: 0 0 0 4px var(--color-iris-soft);
+  outline: none;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 0.5rem;
+}
+
+/* ── Texte en dégradé aurore ───────────────────────────────────────────── */
+.text-aurora {
+  background: linear-gradient(110deg, var(--color-iris-light), var(--color-aqua) 50%, var(--color-magenta));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: aurora-pan 8s linear infinite;
+}
+@keyframes aurora-pan {
+  to { background-position: 200% center; }
+}
+
+/* ── Cadre à bordure animée (cartes véhicule mises en avant) ───────────── */
+.ring-aurora {
+  position: relative;
+}
+.ring-aurora::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(130deg, var(--color-iris), var(--color-aqua), var(--color-magenta), var(--color-iris));
+  background-size: 300% 300%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out-soft);
+  animation: aurora-rotate 6s linear infinite;
+  pointer-events: none;
+}
+.ring-aurora:hover::before,
+.ring-aurora:focus-within::before { opacity: 1; }
+@keyframes aurora-rotate {
+  to { background-position: 300% 50%; }
+}
+
+/* ── Voile lumineux qui suit la souris sur une carte ───────────────────── */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    240px circle at var(--mx, 50%) var(--my, 50%),
+    var(--color-iris-soft),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out-soft);
+  pointer-events: none;
+  z-index: 1;
+}
+.spotlight:hover::after { opacity: 1; }
+
+/* ── Bandeau de pastilles défilantes (marque des agences) ──────────────── */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 38s linear infinite;
+}
+.marquee:hover { animation-play-state: paused; }
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── Squelette de chargement ───────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-panel-2) 25%,
+    var(--color-panel-3) 37%,
+    var(--color-panel-2) 63%
+  );
+  background-size: 400% 100%;
+  animation: skeleton-sweep 1.4s ease-in-out infinite;
+}
+@keyframes skeleton-sweep {
+  from { background-position: 100% 50%; }
+  to   { background-position: 0 50%; }
+}
+
+/* ── Grille d'arrière-plan discrète ────────────────────────────────────── */
+.bg-grid {
+  background-image:
+    linear-gradient(var(--color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* ── Pulsation « disponible » ──────────────────────────────────────────── */
+.dot-live {
+  position: relative;
+}
+.dot-live::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  opacity: 0.6;
+  animation: dot-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes dot-ping {
+  0%   { transform: scale(0.8); opacity: 0.7; }
+  80%  { transform: scale(1.9); opacity: 0; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+/* ============================================================================
+   ACCESSIBILITÉ — respect de prefers-reduced-motion
+   ============================================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================================
+   SENS DE LECTURE ARABE
+   ============================================================================ */
+[dir="rtl"] .rtl-flip { transform: scaleX(-1); }
