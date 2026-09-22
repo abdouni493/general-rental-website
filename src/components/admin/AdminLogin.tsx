@@ -307,8 +307,29 @@ export const AdminLogin: React.FC = () => {
             </motion.button>
           </form>
 
+          {/* Base pas encore initialisée : on dit quoi faire, plutôt que de
+              laisser croire qu'un compte existe déjà. */}
+          {adminExists === 'setup' && (
+            <div
+              className="mt-6 pt-5 rounded-xl px-4 py-3.5 flex items-start gap-2.5"
+              style={{ background: 'rgba(251,191,36,0.09)', border: '1px solid rgba(251,191,36,0.3)' }}
+            >
+              <AlertCircle size={16} style={{ color: 'var(--color-amber)' }} className="shrink-0 mt-0.5" />
+              <div className="min-w-0">
+                <p className="text-xs font-bold mb-1" style={{ color: 'var(--color-title)' }}>
+                  Base du portail non initialisée
+                </p>
+                <p className="text-[11px] leading-relaxed" style={{ color: 'var(--color-muted)' }}>
+                  Exécutez <code className="px-1 py-0.5 rounded font-mono" style={{ background: 'var(--color-panel-2)' }}>sql/01_portail.sql</code>{' '}
+                  dans le SQL Editor du projet Supabase du portail, puis rechargez cette page.
+                  La création du compte administrateur apparaîtra alors ici.
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Bascule — masquée dès qu'un admin existe */}
-          {!adminExists && (
+          {adminExists === 'no' && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -332,7 +353,7 @@ export const AdminLogin: React.FC = () => {
             </motion.div>
           )}
 
-          {adminExists && mode === 'signin' && (
+          {adminExists === 'yes' && mode === 'signin' && (
             <p
               className="text-[11px] text-center mt-6 pt-5"
               style={{ color: 'var(--color-faint)', borderTop: '1px solid var(--color-line-soft)' }}

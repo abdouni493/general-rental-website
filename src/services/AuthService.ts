@@ -21,16 +21,33 @@ import type { AdminUser } from '../types';
 // ============================================================================
 
 export class AuthService {
-  /** Un administrateur est-il déjà enregistré ? (lisible par l'anon) */
-  static async adminExists(): Promise<boolean> {
+  /**
+   * Un administrateur est-il déjà enregistré ?
+   *
+   * Trois réponses possibles, et il faut les distinguer :
+   *   'yes'   → un admin existe, on masque la création ;
+   *   'no'    → aucun admin, on propose la création ;
+   *   'setup' → la fonction n'existe pas, donc le script SQL du portail n'a
+   *             pas encore été exécuté. Afficher « un admin existe déjà »
+   *             serait trompeur : on dit à l'utilisateur ce qu'il doit faire.
+   *
+   * Toute autre panne retombe sur 'yes' : en cas de doute mieux vaut un
+   * bouton absent qu'un formulaire d'inscription ouvert à tous.
+   */
+  static async adminExists(): Promise<'yes' | 'no' | 'setup'> {
     const { data, error } = await supabase.rpc('admin_exists');
     if (error) {
+      const missing =
+        error.code === 'PGRST202' ||
+        /could not find the function|does not exist/i.test(error.message || '');
+      if (missing) {
+        console.warn("[auth] base du portail non initialisée : exécutez sql/01_portail.sql");
+        return 'setup';
+      }
       console.warn('[auth] admin_exists indisponible :', error.message);
-      // En cas de doute on MASQUE la création : mieux vaut un bouton absent
-      // qu'un formulaire d'inscription ouvert à tous.
-      return true;
+      return 'yes';
     }
-    return data === true;
+    return data === true ? 'yes' : 'no';
   }
 
   /** Crée le tout premier administrateur. Échoue si un admin existe déjà. */

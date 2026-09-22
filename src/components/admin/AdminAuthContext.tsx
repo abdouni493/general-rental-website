@@ -10,10 +10,13 @@ import type { AdminUser } from '../../types';
 // la RPC côté serveur refuse de toute façon toute création supplémentaire.
 // ============================================================================
 
+export type AdminSetupState = 'yes' | 'no' | 'setup';
+
 interface AdminAuthValue {
   user: AdminUser | null;
   isLoading: boolean;
-  adminExists: boolean;
+  /** 'yes' un admin existe · 'no' aucun · 'setup' script SQL non exécuté. */
+  adminExists: AdminSetupState;
   refreshAdminExists: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -31,7 +34,7 @@ export const useAdminAuth = (): AdminAuthValue => {
 export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AdminUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [adminExists, setAdminExists] = useState(true);
+  const [adminExists, setAdminExists] = useState<AdminSetupState>('yes');
 
   useEffect(() => {
     let cancelled = false;
@@ -39,7 +42,7 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     const bootstrap = async () => {
       const [current, exists] = await Promise.all([
         AuthService.getCurrentUser().catch(() => null),
-        AuthService.adminExists().catch(() => true),
+        AuthService.adminExists().catch((): AdminSetupState => 'yes'),
       ]);
       if (cancelled) return;
       setUser(current);
@@ -52,13 +55,13 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   }, []);
 
   const refreshAdminExists = useCallback(async () => {
-    setAdminExists(await AuthService.adminExists().catch(() => true));
+    setAdminExists(await AuthService.adminExists().catch((): AdminSetupState => 'yes'));
   }, []);
 
   const signIn = useCallback(async (email: string, password: string) => {
     const signed = await AuthService.signIn(email, password);
     setUser(signed);
-    setAdminExists(true);
+    setAdminExists('yes');
   }, []);
 
   const signOut = useCallback(async () => {
