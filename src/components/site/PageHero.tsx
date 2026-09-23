@@ -1,5 +1,7 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'motion/react';
+import { useSiteSettings } from '../../context/SiteSettingsContext';
+import type { HeroImageKey } from '../../services/SiteSettingsService';
 
 // ============================================================================
 // Bandeau d'en-tête des pages intérieures.
@@ -12,14 +14,14 @@ import { motion, useReducedMotion } from 'motion/react';
 // qualité négociés dans l'URL) — jamais par le CDN d'une marque tierce.
 // ============================================================================
 
-/** Visuels disponibles, un par page. */
+/** Visuels par page : clés de SiteSettings.images, modifiables dans « Paramètres ». */
 export const HERO_IMAGES = {
-  fleet: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=2000&q=80',
-  promotions: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=2000&q=80',
-  agencies: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=2000&q=80',
-  contact: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=2000&q=80',
-  booking: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=2000&q=80',
-} as const;
+  fleet: 'fleet',
+  promotions: 'promotions',
+  agencies: 'agencies',
+  contact: 'contact',
+  booking: 'booking',
+} as const satisfies Record<string, HeroImageKey>;
 
 interface PageHeroProps {
   /** Sur-titre rouge, en petites capitales. */
@@ -28,7 +30,7 @@ interface PageHeroProps {
   title: React.ReactNode;
   /** Phrase d'accroche sous le titre. */
   description?: React.ReactNode;
-  image: string;
+  image: HeroImageKey;
   /** Cadrage vertical de la photo (`object-position`). */
   focus?: string;
 }
@@ -37,12 +39,13 @@ export const PageHero: React.FC<PageHeroProps> = ({
   eyebrow, title, description, image, focus = 'center 50%',
 }) => {
   const reduce = useReducedMotion();
+  const { settings } = useSiteSettings();
 
   return (
     <section className="on-photo relative overflow-hidden">
       <div className="absolute inset-0" aria-hidden="true">
         <img
-          src={image}
+          src={settings.images[image]}
           alt=""
           className={`absolute inset-0 w-full h-full object-cover ${reduce ? '' : 'avis-kenburns'}`}
           style={{ objectPosition: focus }}

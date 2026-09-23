@@ -6,6 +6,8 @@ import {
   Phone, Mail, Facebook, Instagram, ArrowUpRight, Zap,
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
+import { useSiteSettings } from '../../context/SiteSettingsContext';
+import { BrandLogo, BrandName } from '../ui/BrandMark';
 import type { Language } from '../../types';
 
 // ============================================================================
@@ -22,6 +24,7 @@ const NAV_ITEMS: { to: string; label: Record<Language, string>; icon: React.Elem
 
 export const SiteLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { lang, setLang, theme, toggleTheme, agencies } = useApp();
+  const { settings } = useSiteSettings();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
@@ -60,22 +63,19 @@ export const SiteLayout: React.FC<{ children: React.ReactNode }> = ({ children }
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-                className="w-10 h-10 flex items-center justify-center relative overflow-hidden"
-                style={{ background: 'var(--color-iris)' }}
+                className="relative overflow-hidden"
               >
-                <Car size={20} className="text-white relative z-10" />
+                <BrandLogo background="var(--color-iris)" iconSize={20} />
               </motion.div>
               <div className="hidden sm:block leading-tight">
                 <p className="avis-headline text-2xl" style={{ color: 'var(--color-title)' }}>
-                  Drive<span className="text-aurora">Hub</span>
+                  <BrandName />
                 </p>
                 <p
                   className="text-[9px] font-bold tracking-[0.14em] uppercase"
                   style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-display)' }}
                 >
-                  {lang === 'fr'
-                    ? `${agencies.length || ''} agences · une seule réservation`.trim()
-                    : 'كل الوكالات · حجز واحد'}
+                  {settings.tagline[lang]}
                 </p>
               </div>
             </Link>
@@ -270,6 +270,7 @@ const IconButton: React.FC<{ onClick: () => void; label: string; children: React
 
 const SiteFooter: React.FC = () => {
   const { lang, agencies } = useApp();
+  const { settings } = useSiteSettings();
   const year = new Date().getFullYear();
 
   return (
@@ -279,17 +280,13 @@ const SiteFooter: React.FC = () => {
 
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 flex items-center justify-center" style={{ background: '#D4002A' }}>
-                <Car size={18} className="text-white" />
-              </div>
+              <BrandLogo background="#D4002A" />
               <p className="avis-headline text-2xl text-white">
-                Drive<span style={{ color: '#FF4D6D' }}>Hub</span>
+                <BrandName accentColor="#FF4D6D" />
               </p>
             </div>
             <p className="text-sm leading-relaxed max-w-md" style={{ color: 'rgba(255,255,255,0.7)' }}>
-              {lang === 'fr'
-                ? "Le portail qui réunit la flotte de plusieurs agences de location. Comparez, choisissez, réservez : votre demande part directement à l'agence propriétaire du véhicule."
-                : 'البوابة التي تجمع أسطول عدة وكالات تأجير. قارن واختر واحجز: يصل طلبك مباشرة إلى الوكالة المالكة للسيارة.'}
+              {settings.footerDescription[lang]}
             </p>
             <div className="flex flex-wrap gap-2 mt-5">
               {agencies.map(a => (
@@ -378,7 +375,7 @@ const SiteFooter: React.FC = () => {
           style={{ borderTop: '1px solid rgba(255,255,255,0.14)' }}
         >
           <p className="text-xs" style={{ color: 'rgba(255,255,255,0.55)' }}>
-            © {year} DriveHub. {lang === 'fr' ? 'Tous droits réservés.' : 'جميع الحقوق محفوظة.'}
+            © {year} {settings.siteName}{settings.siteNameAccent}. {lang === 'fr' ? 'Tous droits réservés.' : 'جميع الحقوق محفوظة.'}
           </p>
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full dot-live" style={{ background: '#5CB874', color: '#5CB874' }} />

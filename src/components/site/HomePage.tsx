@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 
 import { useApp } from '../../context/AppContext';
+import { useSiteSettings } from '../../context/SiteSettingsContext';
 import { CarCard, CarCardSkeleton } from './CarCard';
 import { CarDetailsModal } from './CarDetailsModal';
 import { AgencyFilter } from './AgencyFilter';
@@ -34,6 +35,7 @@ export const HomePage: React.FC = () => {
     isLoading, loadError, reload, agencyFilter,
   } = useApp();
 
+  const { settings } = useSiteSettings();
   const [detailCar, setDetailCar] = useState<Car | null>(null);
   const heroRef = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
@@ -103,23 +105,12 @@ export const HomePage: React.FC = () => {
             </motion.span>
 
             <h1 className="avis-headline text-5xl sm:text-6xl lg:text-7xl mb-5 text-white">
-              {lang === 'fr' ? (
-                <>
-                  Toutes les agences.<br />
-                  <span className="text-aurora">Une seule réservation.</span>
-                </>
-              ) : (
-                <>
-                  كل الوكالات.<br />
-                  <span className="text-aurora">حجز واحد.</span>
-                </>
-              )}
+              {settings.heroTitle[lang]}<br />
+              <span className="text-aurora">{settings.heroTitleAccent[lang]}</span>
             </h1>
 
             <p className="text-base sm:text-lg max-w-2xl leading-relaxed" style={{ color: 'rgba(255,255,255,0.86)' }}>
-              {lang === 'fr'
-                ? "Comparez les flottes de nos agences partenaires en un seul endroit. Votre réservation part directement à l'agence qui possède le véhicule choisi."
-                : 'قارن أساطيل وكالاتنا الشريكة في مكان واحد. يصل حجزك مباشرة إلى الوكالة المالكة للسيارة المختارة.'}
+              {settings.heroSubtitle[lang]}
             </p>
           </motion.div>
 
@@ -263,10 +254,9 @@ export const HomePage: React.FC = () => {
  * d'avis.com. Le lent zoom (« Ken Burns ») remplace les halos de l'ancien
  * thème, et la parallaxe au défilement est conservée.
  */
-const HERO_IMAGE =
-  'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2400&q=80';
-
-const HeroBackdrop: React.FC<{ orbY?: any; reduce: boolean }> = ({ orbY, reduce }) => (
+const HeroBackdrop: React.FC<{ orbY?: any; reduce: boolean }> = ({ orbY, reduce }) => {
+  const { settings } = useSiteSettings();
+  return (
   <>
     <motion.div
       style={orbY ? { y: orbY } : {}}
@@ -274,7 +264,7 @@ const HeroBackdrop: React.FC<{ orbY?: any; reduce: boolean }> = ({ orbY, reduce 
       aria-hidden="true"
     >
       <img
-        src={HERO_IMAGE}
+        src={settings.images.home}
         alt=""
         className={`absolute inset-0 w-full h-full object-cover ${reduce ? '' : 'avis-kenburns'}`}
         style={{ objectPosition: 'center 55%' }}
@@ -297,7 +287,8 @@ const HeroBackdrop: React.FC<{ orbY?: any; reduce: boolean }> = ({ orbY, reduce 
     {/* Liseré rouge de marque, sur toute la largeur, sous le hero */}
     <div className="absolute bottom-0 left-0 right-0 h-1 z-10" style={{ background: 'var(--color-iris)' }} />
   </>
-);
+  );
+};
 
 // ─── Panneau de recherche de disponibilité ───────────────────────────────────
 
@@ -618,6 +609,7 @@ const AgenciesBand: React.FC = () => {
 
 const FinalCta: React.FC = () => {
   const { lang } = useApp();
+  const { settings } = useSiteSettings();
   const navigate = useNavigate();
 
   return (
@@ -630,12 +622,10 @@ const FinalCta: React.FC = () => {
         className="relative max-w-3xl mx-auto text-center"
       >
         <h2 className="avis-headline text-4xl sm:text-5xl lg:text-6xl mb-5 text-white">
-          {lang === 'fr' ? 'Prêt à prendre la route ?' : 'مستعد للانطلاق؟'}
+          {settings.ctaTitle[lang]}
         </h2>
         <p className="text-base mb-9" style={{ color: 'rgba(255,255,255,0.82)' }}>
-          {lang === 'fr'
-            ? 'Choisissez votre véhicule, indiquez vos dates, et laissez-nous transmettre le reste.'
-            : 'اختر سيارتك، حدد تواريخك، ودعنا نتكفل بالباقي.'}
+          {settings.ctaSubtitle[lang]}
         </p>
         <motion.button
           whileHover={{ y: -2 }}

@@ -3,12 +3,13 @@ import { NavLink, Navigate, Outlet, useNavigate, useLocation } from 'react-route
 import { motion, AnimatePresence } from 'motion/react';
 import {
   LayoutDashboard, Building2, BarChart3, LogOut, ExternalLink,
-  Menu, X, Car, Sun, Moon, ChevronRight,
+  Menu, X, Sun, Moon, ChevronRight, Settings,
 } from 'lucide-react';
 
 import { useAdminAuth } from './AdminAuthContext';
 import { PageLoader } from '../ui/Primitives';
 import { initials } from '../../utils/format';
+import { BrandLogo, BrandName } from '../ui/BrandMark';
 
 // ============================================================================
 // Coquille de l'espace d'administration : barre latérale + contenu.
@@ -21,6 +22,7 @@ const NAV = [
   { to: '/admin', end: true, label: 'Tableau de bord', icon: LayoutDashboard, hint: 'Vue d’ensemble' },
   { to: '/admin/agences', end: false, label: 'Agences connectées', icon: Building2, hint: 'Connexions partenaires' },
   { to: '/admin/statistiques', end: false, label: 'Statistiques', icon: BarChart3, hint: 'Réservations du portail' },
+  { to: '/admin/parametres', end: false, label: 'Paramètres', icon: Settings, hint: 'Nom, logo, landing, images' },
 ];
 
 const THEME_KEY = 'drivehub-theme-admin';
@@ -69,15 +71,10 @@ export const AdminLayout: React.FC = () => {
       {/* Marque */}
       <div className="px-5 py-6" style={{ borderBottom: '1px solid var(--color-line-soft)' }}>
         <div className="flex items-center gap-3">
-          <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: 'linear-gradient(135deg, var(--color-iris), var(--color-aqua))' }}
-          >
-            <Car size={18} className="text-white" />
-          </div>
+          <BrandLogo background="linear-gradient(135deg, var(--color-iris), var(--color-aqua))" className="rounded-xl" />
           <div className="min-w-0">
             <p className="font-black text-base leading-tight" style={{ color: 'var(--color-title)', fontFamily: 'var(--font-display)' }}>
-              Drive<span className="text-aurora">Hub</span>
+              <BrandName />
             </p>
             <p className="text-[10px] font-bold uppercase tracking-[0.14em]" style={{ color: 'var(--color-muted)' }}>
               Administration
@@ -226,7 +223,7 @@ export const AdminLayout: React.FC = () => {
           </button>
 
           <p className="font-black text-base" style={{ color: 'var(--color-title)', fontFamily: 'var(--font-display)' }}>
-            Drive<span className="text-aurora">Hub</span>
+            <BrandName />
           </p>
 
           <a

@@ -17,6 +17,8 @@ import { AdminDashboard } from './components/admin/AdminDashboard';
 import { AdminAgencies } from './components/admin/AdminAgencies';
 import { AdminStatistics } from './components/admin/AdminStatistics';
 import { AdminAuthProvider } from './components/admin/AdminAuthContext';
+import { AdminSettings } from './components/admin/AdminSettings';
+import { SiteSettingsProvider } from './context/SiteSettingsContext';
 
 /** Remonte en haut à chaque changement de page (le smooth-scroll global
  *  rendrait sinon l'arrivée sur une nouvelle page désorientante). */
@@ -52,7 +54,7 @@ export default function App() {
   const location = useLocation();
 
   return (
-    <>
+    <SiteSettingsProvider>
       <ScrollToTop />
       <ThemeScope />
       <Routes location={location}>
@@ -89,6 +91,7 @@ export default function App() {
                   <Route index element={<AdminDashboard />} />
                   <Route path="agences" element={<AdminAgencies />} />
                   <Route path="statistiques" element={<AdminStatistics />} />
+                  <Route path="parametres" element={<AdminSettings />} />
                 </Route>
                 <Route path="*" element={<Navigate to="/admin" replace />} />
               </Routes>
@@ -96,6 +99,6 @@ export default function App() {
           }
         />
       </Routes>
-    </>
+    </SiteSettingsProvider>
   );
 }
